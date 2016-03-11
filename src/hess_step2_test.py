@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-import argparse
+import logging, argparse, os, sys, math
 import numpy as np, numpy.linalg
-import os, sys, math
 
 eps = 10.0**-8.0
 
@@ -18,6 +17,13 @@ def main():
     tot_h2g = args.tot_h2g
     sense_thres = args.sense_threshold
     eig_thres = args.eig_threshold
+    
+    # start logging
+    logging.basicConfig(filename=out_file+'.log', level=logging.INFO,
+        format='%(message)s', filemode="w")
+    logging.info('Command issued:\n'
+        +'\t'+sys.argv[0]+'\n'
+        +'\t'+(' '.join(sys.argv[1:])))
 
     # load step1
     locus_info,all_eig,all_prj = load_step1(prefix)
@@ -27,6 +33,9 @@ def main():
         all_h2g,raw_est = get_local_h2g_joint(locus_info, all_eig,
             all_prj, num_eig, eig_thres, sense_thres, gc)
         all_var = get_var_est_joint(locus_info, all_h2g)
+        logging.info('Estimated total h2g: %.3f (%.3f)' % (
+            np.sum(all_h2g), math.sqrt(np.sum(all_var))
+        ))
     # estimate h2g independently when total h2g is provided
     else:
         pass
@@ -55,33 +64,48 @@ def get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc):
         raw_est.append((np.sum(tmp)*gc, float(k)))
     return raw_est
 
-# estimate local heritability jointly
-def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
-    eig_thres, sense_thres, gc):
+# estimate lambda gc
+def estimate_lambda_gc(locus_info, all_eig, all_prj, num_eig, eig_thres):
     
-    # estimate my gc
-    num_win = len(locus_info)
-    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, num_eig, eig_thres, 1.0)
+    # compute biased raw estimate
+    raw_est = get_raw_h2g(locus_info, all_eig, all_prj,
+                    num_eig, eig_thres, 1.0)
+
+    # compute observed local heritability and theoretical local
+    # heritability under the null of no heritability
     obs_th = []
+    num_win = len(locus_info)
     for i in xrange(num_win):
         n = float(locus_info[i][5])
         obs_th.append([raw_est[i][0], raw_est[i][1]/(n+eps)])
     obs_th = np.matrix(sorted(obs_th, key=lambda x: x[0]))
-    num_use = int(0.5*num_win)
-    my_gc = np.linalg.pinv(obs_th[0:num_use,0])*obs_th[0:num_use,1]
-    my_gc = max(my_gc[0,0], 1.0)
+
+    # assuming top 50% of windows are the null
+    m = int(0.5*num_win)
+    logging.info('Using %d windows to estimate lambda gc' % m)
+    gc = (np.linalg.pinv(obs_th[0:m,0])*obs_th[0:m,1])[0,0]
+
+    return max(gc, 1.0)
+
+# estimate local heritability jointly
+def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
+    eig_thres, sense_thres, gc):
+    
+    # estimate gc if not provided
+    if(gc is None):
+        gc = estimate_lambda_gc(locus_info, all_eig, all_prj,
+                num_eig, eig_thres)
+    logging.info('Using lambda gc: %f' % gc)
 
     # choose max k
-    max_k = float(num_eig)
+    num_win = len(locus_info)
     avg_n = np.mean(np.array([float(elem[5]) for elem in locus_info]))
-    for i in reversed(xrange(num_eig+1)):
-        denom = avg_n-num_win*max_k
-        if(avg_n/denom < sense_thres and denom > 0):
-            break
-        max_k -= 1.0
-    
+    max_k = (sense_thres*avg_n-avg_n)/(sense_thres*num_win+eps)
+    max_k = min(int(math.ceil(max_k)), num_eig)
+    logging.info('Using a maximum of %d eigenvectors' % max_k)
+
     # adjust for bias
-    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, my_gc)
+    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc)
     A = np.matrix(np.zeros((num_win, num_win)))
     b = np.matrix(np.zeros((num_win, 1)))
     for i in xrange(num_win):
@@ -93,9 +117,9 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
                 A[i,j] = -raw_est[i][1]
         b[i,0] = n*raw_est[i][0]-raw_est[i][1]
     est = np.linalg.pinv(A)*b
+    
+    # cap large local heritability at 0.001
     est[np.where(est>0.001)] = 0.001
-
-    print np.sum(est)
 
     return est,raw_est
 
@@ -176,7 +200,8 @@ def get_command_line():
     parser.add_argument('--k', dest='k', type=int, default=50,
                    help='Maximum number of eigenvectors to use (default 50)')
     parser.add_argument('--lambda_gc', dest='lambda_gc', type=float,
-                   default=1.0, help='Genomic control factor (default 1.0)')
+                   default=None, help='Genomic control factor (will be \
+                   estimated if not provided)')
     parser.add_argument('--tot_h2g', dest='tot_h2g', type=float,
                    help='Total trait SNP heritability')
     parser.add_argument('--sense-threshold', dest='sense_threshold', type=float,
