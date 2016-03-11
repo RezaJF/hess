@@ -16,15 +16,17 @@ def main():
     out_file = args.out
     gc = args.lambda_gc
     tot_h2g = args.tot_h2g
+    sense_thres = args.sense_threshold
+    eig_thres = args.eig_threshold
 
     # load step1
     locus_info,all_eig,all_prj = load_step1(prefix)
 
     # estimate h2g jointly when total h2g is not provided
     if(tot_h2g is None):
-        all_h2g,raw_est = get_local_h2g_no_tot(locus_info, all_eig,
-            all_prj, num_eig, gc)
-        all_var = get_var_est_no_tot(locus_info, all_h2g)
+        all_h2g,raw_est = get_local_h2g_joint(locus_info, all_eig,
+            all_prj, num_eig, eig_thres, sense_thres, gc)
+        all_var = get_var_est_joint(locus_info, all_h2g)
     # estimate h2g independently when total h2g is provided
     else:
         pass
@@ -45,44 +47,60 @@ def output_local_h2g(out_file, locus_info, raw_est, all_h2g, all_var):
     out_file.close()
 
 # get biased raw estimate
-def get_raw_h2g(locus_info, all_eig, all_prj, max_k, gc):
+def get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc):
     raw_est = []
     for i in xrange(len(locus_info)):
-        k = min(max_k, all_eig[i].size)
+        k = min(max_k, np.where(all_eig[i] > eig_thres)[0].size)
         tmp = np.divide(all_prj[i][0,0:k], all_eig[i][0,0:k]+eps)
-        if(all_eig[i].size > 100):
-            raw_est.append((np.sum(tmp)*gc, float(k)))
-        else:
-            raw_est.append((0.0, 0.0))
+        raw_est.append((np.sum(tmp)*gc, float(k)))
     return raw_est
+
+# estimate local heritability jointly
+def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
+    eig_thres, sense_thres, gc):
     
-# estimate local heritability without total trait h2g
-def get_local_h2g_no_tot(locus_info, all_eig, all_prj, num_eig, gc):
-    
-    # get step 1 tot
+    # estimate my gc
     num_win = len(locus_info)
-    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, num_eig, gc)
-    tot_step1 = 0.0
+    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, num_eig, eig_thres, 1.0)
+    obs_th = []
     for i in xrange(num_win):
         n = float(locus_info[i][5])
-        tot_step1 += raw_est[i][0]-raw_est[i][1]/(n+eps)
+        obs_th.append([raw_est[i][0], raw_est[i][1]/(n+eps)])
+    obs_th = np.matrix(sorted(obs_th, key=lambda x: x[0]))
+    num_use = int(0.5*num_win)
+    my_gc = np.linalg.pinv(obs_th[0:num_use,0])*obs_th[0:num_use,1]
+    my_gc = max(my_gc[0,0], 1.0)
 
-    print tot_step1
-
-    # get step 2 estimate
-    est = []
+    # choose max k
+    max_k = float(num_eig)
+    avg_n = np.mean(np.array([float(elem[5]) for elem in locus_info]))
+    for i in reversed(xrange(num_eig+1)):
+        denom = avg_n-num_win*max_k
+        if(avg_n/denom < sense_thres and denom > 0):
+            break
+        max_k -= 1.0
+    
+    # adjust for bias
+    raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, my_gc)
+    A = np.matrix(np.zeros((num_win, num_win)))
+    b = np.matrix(np.zeros((num_win, 1)))
     for i in xrange(num_win):
         n = float(locus_info[i][5])
-        local_h2g = raw_est[i][0]
-        local_h2g -= (1.0-tot_step1)*raw_est[i][1]/(n+eps)
-        est.append(local_h2g)
-    est = np.matrix(est)
+        for j in xrange(num_win):
+            if(i == j):
+                A[i,j] = n-raw_est[i][1]
+            else:
+                A[i,j] = -raw_est[i][1]
+        b[i,0] = n*raw_est[i][0]-raw_est[i][1]
+    est = np.linalg.pinv(A)*b
+    est[np.where(est>0.001)] = 0.001
+
     print np.sum(est)
-    sys.exit()
+
     return est,raw_est
 
 # estimate variance when local heritability is estimated jointly
-def get_var_est_no_tot(locus_info, all_h2g):
+def get_var_est_joint(locus_info, all_h2g):
     num_win = len(locus_info)
     tot = np.sum(all_h2g)
     A = np.matrix(np.zeros((num_win, num_win)))
@@ -161,6 +179,12 @@ def get_command_line():
                    default=1.0, help='Genomic control factor (default 1.0)')
     parser.add_argument('--tot_h2g', dest='tot_h2g', type=float,
                    help='Total trait SNP heritability')
+    parser.add_argument('--sense-threshold', dest='sense_threshold', type=float,
+                   default=2.0, help='Sensitivity threshold on \
+                   total h2g estimates, used when tot_h2g is not provided \
+                   (default 2.0)')
+    parser.add_argument('--eig-threshold', dest='eig_threshold', type=float,
+                   default=1.0, help='Eigenvalue threshold (default 1.0)')
     args = parser.parse_args()
     return args
 
