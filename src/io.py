@@ -1,4 +1,5 @@
-import sys
+import sys, math
+import numpy as np
 
 """
 description:
@@ -78,21 +79,26 @@ def load_partition(partition_file_name):
 """
 description:
     load specific lines in the reference panel
+return:
+arguments:
 """
-def load_reference_panel(ref_panel_file, load_line_idx,
-                         legend, start_line_idx):
-    snp_data = dict()
-    new_start_line_idx = start_line_idx
-    num_snp_to_load = len(load_line_idx)
+def load_reference_panel(ref_panel_file, lines_to_load,
+                         legend, start_line):
+    snp_idx = dict()
+    ref_data = np.array([])
+    end_line = start_line
+    num_snp_to_load = len(lines_to_load)
     num_snp_loaded = 0
+    idx = 0
     while(num_snp_loaded < num_snp_to_load):
         line = ref_panel_file.readline()
         if(not line): break
-        if(new_start_line_idx in load_line_idx):
-            snp = legend[new_start_line_idx]
-            line = line.strip()
-            cols = line.split()
-            snp_data[snp] = [float(cols[i]) for i in xrange(len(cols))]
+        if(end_line in lines_to_load):
+            snp = legend[new_start_line]
+            cols = line.strip().split()
+            ref_data = np.append(ref_data, np.array(cols).astype(float))
+            snp_idx[snp] = idx
             num_snp_loaded += 1
-        new_start_line_idx += 1
-    return snp_data,new_start_line_idx
+            idx += 1
+        end_line += 1
+    return (ref_data, snp_idx, end_line)
