@@ -1,14 +1,15 @@
 import sys, math
 import numpy as np
 
+
 """
 description:
     load legend file for reference panel
+arguments:
+    1. legend_file_name (str) - path to the legend file
 return:
     1. a dictionary that maps snp id with line number
     2. a list of snp ids in the order they appear in the legend
-arguments:
-    1. legend_file_name (str) - path to the legend file
 """ 
 def load_legend(legend_file_name):
     all_snps = []
@@ -28,12 +29,12 @@ def load_legend(legend_file_name):
 """
 description:
     load effect size (beta) from z-score file
+arguments:
+    1. zscore_file_name (str) - path to the z-score file
 return:
     1. a dictionary that maps snp id with beta
     2. a list of (snp id, position, sample size) in the order they
        appear in the z-score file
-arguments:
-    1. zscore_file_name (str) - path to the z-score file
 """
 def load_beta(zscore_file_name):
     all_snps = []
@@ -54,10 +55,10 @@ def load_beta(zscore_file_name):
 """
 description:
     load partition file
+arguments:
+    1. partition_file_name (str) - path to the partition file
 return:
     1. a list of (start position, end position)
-arguments:
-    1. partition_file_name (str) - path to the partition file 
 """
 def load_partition(partition_file_name):
     partition = []
@@ -79,13 +80,21 @@ def load_partition(partition_file_name):
 """
 description:
     load specific lines in the reference panel
-return:
 arguments:
+    1. ref_panel_file (file) - file id of the reference panel file
+    2. locus_snp (list) - a list of snp ids in desired order
+    3. lines_to_load (set) - lines to load in the reference panel file
+    4. legend (list) - legend of the reference panel file
+    5. start_line (int) - line number at which the loading start
+return:
+    1. the genotype matrix (one snp per row)
+    2. line index at which the loading ends
 """
-def load_reference_panel(ref_panel_file, lines_to_load,
+def load_reference_panel(ref_panel_file, locus_snp, lines_to_load,
                          legend, start_line):
+    # load raw data from reference panel
     snp_idx = dict()
-    ref_data = np.array([])
+    ref_data = []
     end_line = start_line
     num_snp_to_load = len(lines_to_load)
     num_snp_loaded = 0
@@ -94,11 +103,21 @@ def load_reference_panel(ref_panel_file, lines_to_load,
         line = ref_panel_file.readline()
         if(not line): break
         if(end_line in lines_to_load):
-            snp = legend[new_start_line]
+            snp = legend[end_line]
             cols = line.strip().split()
-            ref_data = np.append(ref_data, np.array(cols).astype(float))
+            ref_data.append(cols)
             snp_idx[snp] = idx
             num_snp_loaded += 1
             idx += 1
         end_line += 1
-    return (ref_data, snp_idx, end_line)
+    ref_data = np.matrix(ref_data).astype(float)
+    
+    # convert to genotype data
+    ref_data = ref_data[:,0::2]+ref_data[:,1::2]
+    
+    # make sure the order is correct
+    gens = np.matrix(np.zeros((len(locus_snp),ref_data.shape[1])))
+    for i in xrange(len(locus_snp)):
+        gens[i,:] = ref_data[snp_idx[locus_snp[i][0]],:]
+    
+    return (gens, end_line)
