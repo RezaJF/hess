@@ -115,9 +115,6 @@ def load_reference_panel(ref_panel_file, locus_snp, lines_to_load,
         end_line += 1
     ref_data = np.matrix(ref_data).astype(float)
     
-    # convert to genotype data
-    ref_data = ref_data[:,0::2]+ref_data[:,1::2]
-    
     # make sure the order is correct
     gens = np.matrix(np.zeros((len(locus_snp),ref_data.shape[1])))
     for i in xrange(len(locus_snp)):
