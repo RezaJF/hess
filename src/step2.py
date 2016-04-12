@@ -9,9 +9,19 @@ eps = 10.0**-8.0         # a small number to avoid division by 0
 pct_use_win_gc = 0.5     # per cent of loci used to estimate lambda gc
 
 
-
-
-# get biased raw estimate
+"""
+description:
+    get raw/biased local heritability estimates
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_eig (list of np.matrix) - eigenvalues of ld matrices at all loci
+    3. all_prj (list of np.matrix) - projection squared at all loci
+    4. max_k (int) - maximum number of eigenvectors to use
+    5. eig_thres (float) - threshold on eigenvalues
+    6. gc (None of float) - genomic control factor, lambda gc
+return:
+    1. a list of (raw estimate, k)
+"""
 def get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc):
     raw_est = []
     for i in xrange(len(locus_info)):
@@ -20,7 +30,19 @@ def get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc):
         raw_est.append((np.sum(tmp)*gc, float(k)))
     return raw_est
 
-# estimate lambda gc
+
+"""
+description:
+    estimate genomic control factor, lambda gc
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_eig (list of np.matrix) - eigenvalues of ld matrices at all loci
+    3. all_prj (list of np.matrix) - projection squared at all loci
+    4. max_k (int) - maximum number of eigenvectors to use
+    5. eig_thres (float) - threshold on eigenvalues
+return:
+    1. estimated lambda gc
+"""
 def estimate_lambda_gc(locus_info, all_eig, all_prj, num_eig, eig_thres):
     
     # compute biased raw estimate
@@ -42,7 +64,22 @@ def estimate_lambda_gc(locus_info, all_eig, all_prj, num_eig, eig_thres):
 
     return max(gc, 1.0)
 
-# estimate local heritability jointly
+
+"""
+description:
+    estimate local heritability jointly, when total h2g is unknown
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_eig (list of np.matrix) - eigenvalues of ld matrices at all loci
+    3. all_prj (list of np.matrix) - projection squared at all loci
+    4. num_eig (int) - maximum number of eigenvectors to use
+    5. eig_thres (float) - threshold on eigenvalues
+    6. sens_thres (float) - sensitivity threshold
+    7. gc (float) - genomic control factor, lambda gc
+return:
+    1. an np.matrix of unbiased local heritability estimates
+    2. a list of (raw_est, k)
+"""
 def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     eig_thres, sense_thres, gc):
     
@@ -75,7 +112,17 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     
     return est,raw_est
 
-# estimate variance when local heritability is estimated jointly
+
+"""
+description:
+    compute variance estimates when local heritability
+    is estimated jointly
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_h2g (np.matrix) - a matrix of local heritability
+return:
+    1. a np.matrix of estimated variance
+"""
 def get_var_est_joint(locus_info, all_h2g):
     num_win = len(locus_info)
     tot = np.sum(all_h2g)
@@ -96,10 +143,24 @@ def get_var_est_joint(locus_info, all_h2g):
     var_est = np.linalg.pinv(A)*b
     return var_est
 
-# estimate local heritability independently
-# when total SNP heritability is not provided
+
+"""
+description:
+    estimate local heritability independently, given total snp heritability
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_eig (list of np.matrix) - eigenvalues of ld matrices at all loci
+    3. all_prj (list of np.matrix) - projection squared at all loci
+    4. num_eig (int) - maximum number of eigenvectors to use
+    5. eig_thres (float) - threshold on eigenvalues
+    6. gc (None of float) - genomic control factor, lambda gc
+    7. tot_h2g (float) - total snp heritability
+return:
+    1. an np.matrix of unbiased local heritability estimates
+    2. a list of (raw_est, k)
+"""
 def get_local_h2g_indep(locus_info, all_eig, all_prj, num_eig,
-    eig_thres, sense_thres, gc, tot_h2g):
+        eig_thres, sense_thres, gc, tot_h2g):
     
     # estimate gc if not provided
     if(gc is None):
