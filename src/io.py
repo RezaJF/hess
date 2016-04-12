@@ -1,3 +1,5 @@
+# (c) 2016-2021 Huwenbo Shi
+
 import sys, math, os
 import numpy as np
 
