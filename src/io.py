@@ -1,6 +1,7 @@
 # (c) 2016-2021 Huwenbo Shi
 
-import sys, math, os
+
+import sys, math, os, gzip
 import numpy as np
 
 
@@ -15,7 +16,7 @@ return:
 """ 
 def load_legend(legend_file_name):
     all_snps = []
-    legend_file = open(legend_file_name, 'r')
+    legend_file = gzip.open(legend_file_name, 'r')
     snp_idx = dict()
     idx = 0
     for line in legend_file:

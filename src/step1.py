@@ -1,9 +1,9 @@
 #!/usr/bin/python
-
 # (c) 2016-2021 Huwenbo Shi
 
+
 import numpy as np, numpy.linalg
-import math, sys, io
+import math, sys, io, gzip
 
 
 """
@@ -99,7 +99,7 @@ def output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg, snp_beta,
     out_file_info = open(out_file_info, 'w')
     out_file_proj = open(out_file_proj, 'w')
     out_file_eig = open(out_file_eig, 'w')
-    ref_file = open(ref_file)
+    ref_file = gzip.open(ref_file)
     
     # iterate through locus
     line_idx = 0
