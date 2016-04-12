@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 # (c) 2016-2021 Huwenbo Shi
 
 import numpy as np, numpy.linalg
