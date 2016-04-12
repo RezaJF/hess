@@ -121,7 +121,18 @@ def get_local_h2g_indep(locus_info, all_eig, all_prj, num_eig,
     
     return est,raw_est
 
-# estimate variance when local heritability is estimated independently
+
+"""
+description:
+    compute variance estimates when local heritability
+    is estimated independently
+arguments:
+    1. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    2. all_h2g (np.matrix) - a matrix of local heritability
+    3. tot_h2g_se (float) - standard error of total snp heritability
+return:
+    1. a np.matrix of estimated variance
+"""
 def get_var_est_indep(locus_info, all_h2g, tot_h2g_se):
     num_win = len(locus_info)
     var_est = np.matrix(np.zeros((num_win,1)))
