@@ -2,8 +2,7 @@
 
 import numpy as np, numpy.linalg
 import argparse, math, sys
-from src import io
-from src import step1
+from src import io, step1
 
 # main function
 def main():
@@ -116,6 +115,7 @@ def get_command_line():
                    default=1.0, help='Eigenvalue threshold (default 1.0)') 
  
     args = parser.parse_args()
+    
     return args
 
 if(__name__ == '__main__'):
