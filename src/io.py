@@ -1,4 +1,4 @@
-import sys, math
+import sys, math, os
 import numpy as np
 
 
@@ -121,3 +121,59 @@ def load_reference_panel(ref_panel_file, locus_snp, lines_to_load,
         gens[i,:] = ref_data[snp_idx[locus_snp[i][0]],:]
     
     return (gens, end_line)
+
+
+"""
+description:
+    load output from step 1
+argument:
+    1. prefix (str) - prefix of the file names generated in step 1
+output:
+    1. a list of (chrom, start, end, num_snp, rank, sample size)
+    2. a list of np.matrix of eigen values at each loci
+    3. a list of np.matrix of projection squares at each loci
+"""
+def load_step1(prefix):
+    
+    # load info
+    locus_info = []
+    for i in xrange(1,23):
+        fnm = '%s_chr%d.info' % (prefix, i)
+        if(not os.path.exists(fnm)):
+            continue
+        fnm = open(fnm)
+        for line in fnm:
+            line = line.strip()
+            cols = line.split()
+            locus_info.append((i,cols[0],cols[1],cols[2],cols[3],cols[4]))
+        fnm.close()
+
+    # load eigs
+    all_eig = []
+    for i in xrange(1,23):
+        fnm = '%s_chr%d.eig' % (prefix, i)
+        if(not os.path.exists(fnm)):
+            continue
+        fnm = open(fnm)
+        for line in fnm:
+            line = line.strip()
+            cols = line.split()
+            tmp = np.matrix([float(cols[i]) for i in range(len(cols))])
+            all_eig.append(tmp)
+        fnm.close()
+
+    # load prjsq
+    all_prj = []
+    for i in xrange(1,23):
+        fnm = '%s_chr%d.prjsq' % (prefix, i)
+        if(not os.path.exists(fnm)):
+            continue
+        fnm = open(fnm)
+        for line in fnm:
+            line = line.strip()
+            cols = line.split()
+            tmp = np.matrix([float(cols[i]) for i in range(len(cols))])
+            all_prj.append(tmp)
+        fnm.close()
+
+    return locus_info,all_eig,all_prj

@@ -1,56 +1,10 @@
 #!/usr/bin/python
 
-import logging, argparse, os, sys, math
+import math, io
 import numpy as np, numpy.linalg
 
 eps = 10.0**-8.0
 pct_use_win_gc = 0.5
-
-# main function
-def main():
-   
-    # get command line
-    args = get_command_line()
-    prefix = args.prefix
-    num_eig = args.k
-    out_file = args.out
-    gc = args.lambda_gc
-    if(not args.tot_h2g == None):
-        tot_h2g = args.tot_h2g[0]
-        tot_h2g_se = args.tot_h2g[1]
-    sense_thres_joint = args.sense_threshold_joint
-    sense_thres_indep = args.sense_threshold_indep
-    eig_thres = args.eig_threshold
-    
-    # start logging
-    logging.basicConfig(filename=out_file+'.log', level=logging.INFO,
-        format='%(message)s', filemode="w")
-    logging.info('Command issued:\n'
-        +'\t'+sys.argv[0]+'\n'
-        +'\t'+(' '.join(sys.argv[1:])))
-
-    # load step1
-    locus_info,all_eig,all_prj = load_step1(prefix)
-
-    # estimate h2g jointly when total h2g is not provided
-    if(args.tot_h2g is None):
-        all_h2g,raw_est = get_local_h2g_joint(locus_info, all_eig,
-            all_prj, num_eig, eig_thres, sense_thres_joint, gc)
-        all_var = get_var_est_joint(locus_info, all_h2g)
-        logging.info('Estimated total h2g: %.3f (%.4f)' % (
-            np.sum(all_h2g), math.sqrt(np.sum(all_var))
-        ))
-    # estimate h2g independently when total h2g is provided
-    else:
-        all_h2g,raw_est = get_local_h2g_indep(locus_info, all_eig,
-            all_prj, num_eig, eig_thres, sense_thres_indep, gc, tot_h2g)
-        all_var = get_var_est_indep(locus_info, all_h2g, tot_h2g_se)
-        logging.info('Estimated total h2g: %.3f (%.4f)' % (
-            np.sum(all_h2g), math.sqrt(np.sum(all_var))
-        ))
-
-    # write output
-    output_local_h2g(out_file, locus_info, raw_est, all_h2g, all_var)
 
 # write to output
 def output_local_h2g(out_file, locus_info, raw_est, all_h2g, all_var):
@@ -91,7 +45,6 @@ def estimate_lambda_gc(locus_info, all_eig, all_prj, num_eig, eig_thres):
 
     # assuming top 50% of windows are the null
     m = int(pct_use_win_gc*num_win)
-    logging.info('Using %d windows to estimate lambda gc' % m)
     gc = (np.linalg.pinv(obs_th[0:m,0])*obs_th[0:m,1])[0,0]
 
     return max(gc, 1.0)
@@ -104,7 +57,6 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     if(gc is None):
         gc = estimate_lambda_gc(locus_info, all_eig, all_prj,
                 num_eig, eig_thres)
-    logging.info('Using lambda gc: %.2f' % gc)
     
     # choose max k
     num_win = len(locus_info)
@@ -113,7 +65,6 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     avg_n = tot_n/num_snp
     max_k = (sense_thres*avg_n-avg_n)/(sense_thres*num_win+eps)
     max_k = min(int(math.ceil(max_k)), num_eig)
-    logging.info('Using a maximum of %d eigenvectors' % max_k)
 
     # adjust for bias
     raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc)
@@ -161,14 +112,12 @@ def get_local_h2g_indep(locus_info, all_eig, all_prj, num_eig,
     if(gc is None):
         gc = estimate_lambda_gc(locus_info, all_eig, all_prj,
                 num_eig, eig_thres)
-    logging.info('Using lambda gc: %.2f' % gc)
 
     # choose max k
     num_win = len(locus_info)
     avg_n = np.mean(np.array([float(elem[5]) for elem in locus_info]))
     max_k = (sense_thres*avg_n)/(num_win+eps)
     max_k = min(int(math.ceil(max_k)), num_eig)
-    logging.info('Using a maximum of %d eigenvectors' % max_k)
 
     # adjust for bias
     raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc)
@@ -193,82 +142,3 @@ def get_var_est_indep(locus_info, all_h2g, tot_h2g_se):
         var = var*((1-h2g)/(n+eps))
         var_est[i,0] = var+(tot_h2g_se*p/(n+eps))**2.0
     return var_est
-
-# load step 1
-def load_step1(prefix):
-    
-    # load info
-    locus_info = []
-    for i in xrange(1,23):
-        fnm = '%s_chr%d.info' % (prefix, i)
-        if(not os.path.exists(fnm)):
-            continue
-        fnm = open(fnm)
-        for line in fnm:
-            line = line.strip()
-            cols = line.split()
-            locus_info.append((i,cols[0],cols[1],cols[2],cols[3],cols[4]))
-        fnm.close()
-    logging.info('Loaded %d loci in step 1 info file' % len(locus_info))
-
-    # eigs
-    all_eig = []
-    for i in xrange(1,23):
-        fnm = '%s_chr%d.eig' % (prefix, i)
-        if(not os.path.exists(fnm)):
-            continue
-        fnm = open(fnm)
-        for line in fnm:
-            line = line.strip()
-            cols = line.split()
-            tmp = np.matrix([float(cols[i]) for i in range(len(cols))])
-            all_eig.append(tmp)
-        fnm.close()
-    logging.info('Loaded %d loci in step 1 eig file' % len(all_eig))
-
-    # prjsq
-    all_prj = []
-    for i in xrange(1,23):
-        fnm = '%s_chr%d.prjsq' % (prefix, i)
-        if(not os.path.exists(fnm)):
-            continue
-        fnm = open(fnm)
-        for line in fnm:
-            line = line.strip()
-            cols = line.split()
-            tmp = np.matrix([float(cols[i]) for i in range(len(cols))])
-            all_prj.append(tmp)
-        fnm.close()
-    logging.info('Loaded %d loci in step 1 prjsq file' % len(all_prj))
-
-    return locus_info,all_eig,all_prj
-
-# get command line
-def get_command_line():
-    parser = argparse.ArgumentParser(description='Estimate local h2g')
-    parser.add_argument('--prefix', dest='prefix', type=str,
-                   help='Prefix used for step 1', required=True)
-    parser.add_argument('--out', dest='out', type=str,
-                   help='Output file name', required=True)
-    parser.add_argument('--k', dest='k', type=int, default=50,
-                   help='Maximum number of eigenvectors to use (default 50)')
-    parser.add_argument('--lambda_gc', dest='lambda_gc', type=float,
-                   default=None, help='Genomic control factor (will be \
-                   estimated if not provided)')
-    parser.add_argument('--tot-h2g', dest='tot_h2g', nargs=2, type=float,
-                   help='Total trait SNP heritability')
-    parser.add_argument('--sense-threshold-joint', dest='sense_threshold_joint', type=float,
-                   default=2.0, help='Sensitivity threshold on \
-                   total h2g estimates, used when tot_h2g is not provided \
-                   (default 2.0)')
-    parser.add_argument('--sense-threshold-indep', dest='sense_threshold_indep', type=float,
-                   default=1.0, help='Sensitivity threshold on \
-                   total h2g estimates, used when tot_h2g is provided \
-                   (default 1.0)')
-    parser.add_argument('--eig-threshold', dest='eig_threshold', type=float,
-                   default=1.0, help='Eigenvalue threshold (default 1.0)')
-    args = parser.parse_args()
-    return args
-
-if(__name__ == '__main__'):
-    main()

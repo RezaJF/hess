@@ -2,7 +2,7 @@
 
 import numpy as np, numpy.linalg
 import argparse, math, sys
-from src import io, step1
+from src import io, step1, step2
 
 # main function
 def main():
@@ -10,7 +10,7 @@ def main():
     # get command line
     args = get_command_line()
 
-    # step 1 arguments
+    # get step 1 arguments
     zsc_file = args.zscore_file
     leg_file = args.legend_file
     out_file_step1 = args.output_file
@@ -18,7 +18,7 @@ def main():
     part_file = args.partition_file
     chrom = args.chrom
 
-    # step 2 arguments
+    # get step 2 arguments
     prefix = args.prefix
     num_eig = args.k
     out_file_step2 = args.out
@@ -30,7 +30,7 @@ def main():
     sense_thres_indep = args.sense_threshold_indep
     eig_thres = args.eig_threshold   
  
-    # run step 1
+    ##########     run step 1     ##########
     if(zsc_file        is not None and 
        leg_file        is not None and
        out_file_step1  is not None and
@@ -53,7 +53,8 @@ def main():
         # output eigenvalue and projection squared
         step1.output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg,
             snp_beta, snp_beta_info, part, ref_file, out_file_step1)
-    # run step 2
+    
+    ##########     run step 2     ##########
     elif(zsc_file        is     None and 
          leg_file        is     None and
          out_file_step1  is     None and
@@ -62,8 +63,28 @@ def main():
          chrom           is     None and
          prefix          is not None and
          out_file_step2  is not None):
-        print 'running step 2'
-    # unreognized options
+        
+        # load step1
+        locus_info,all_eig,all_prj = io.load_step1(prefix)
+        
+        # estimate h2g jointly when total h2g is not provided
+        if(args.tot_h2g is None):
+            all_h2g,raw_est = step2.get_local_h2g_joint(locus_info, all_eig,
+                                        all_prj, num_eig, eig_thres,
+                                        sense_thres_joint, gc)
+            all_var = step2.get_var_est_joint(locus_info, all_h2g)
+        # estimate h2g independently when total h2g is provided
+        else:
+            all_h2g,raw_est = step2.get_local_h2g_indep(locus_info, all_eig,
+                                        all_prj, num_eig, eig_thres,
+                                        sense_thres_indep, gc, tot_h2g)
+            all_var = step2.get_var_est_indep(locus_info, all_h2g, tot_h2g_se)
+
+        # write output
+        step2.output_local_h2g(out_file_step2, locus_info, raw_est,
+                all_h2g, all_var)
+    
+    ##########     unrecognized     ##########
     else:
         print 'unrecognized option'
         sys.exit(1)
