@@ -1,2 +1,1 @@
-# HESS
-Heritability Estimation from Summary Statistics
+## HESS (Heritability Estimation from Summary Statistics)
