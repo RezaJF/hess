@@ -1,22 +1,15 @@
 #!/usr/bin/python
 
+
 import math, io
 import numpy as np, numpy.linalg
 
-eps = 10.0**-8.0
-pct_use_win_gc = 0.5
 
-# write to output
-def output_local_h2g(out_file, locus_info, raw_est, all_h2g, all_var):
-    out_file = open(out_file, 'w')
-    out_file.write('chr\tstart\tend\tnum_snp\tk\tlocal_h2g\tvar\n')
-    num_win = len(locus_info)
-    for i in xrange(num_win):
-        line = '%s\t%s\t%s\t%s\t%d\t%.10f\t%.12f' % (
-            locus_info[i][0], locus_info[i][1], locus_info[i][2],
-            locus_info[i][3], raw_est[i][1], all_h2g[i,0], all_var[i,0])
-        out_file.write(line+'\n')
-    out_file.close()
+eps = 10.0**-8.0         # a small number to avoid division by 0
+pct_use_win_gc = 0.5     # per cent of loci used to estimate lambda gc
+
+
+
 
 # get biased raw estimate
 def get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc):
@@ -142,3 +135,27 @@ def get_var_est_indep(locus_info, all_h2g, tot_h2g_se):
         var = var*((1-h2g)/(n+eps))
         var_est[i,0] = var+(tot_h2g_se*p/(n+eps))**2.0
     return var_est
+
+
+"""
+description:
+    output local h2g estimates
+arguments:
+    1. out_file (str) - file name for output file
+    2. locus_info (list) - a list of (chrom, start, end, num snp, rank, n)
+    3. raw_est (list) - a list of (raw_h2g, k)
+    4. all_h2g (np.matrix) - a matrix of local heritability estimates
+    5. all_var (np.matrix) - variance estimates for all_h2g
+return:
+    nothing
+"""
+def output_local_h2g(out_file, locus_info, raw_est, all_h2g, all_var):
+    out_file = open(out_file, 'w')
+    out_file.write('chr\tstart\tend\tnum_snp\tk\tlocal_h2g\tvar\n')
+    num_win = len(locus_info)
+    for i in xrange(num_win):
+        line = '%s\t%s\t%s\t%s\t%d\t%.10f\t%.12f' % (
+            locus_info[i][0], locus_info[i][1], locus_info[i][2],
+            locus_info[i][3], raw_est[i][1], all_h2g[i,0], all_var[i,0])
+        out_file.write(line+'\n')
+    out_file.close()
