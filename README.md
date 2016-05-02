@@ -85,9 +85,9 @@ For input file format, please refer to
 [Input file format](#input_file_format).
 
 After executing the command above, 4 files will be created for each
-chromosome:
+chromosome, taking up ~10MB of space for the entire genome:
 
-* step1\_chr22.info.gz - containing the information of each locus (start and
+* step1\_chr22.info.gz - contains the information of each locus (start and
    end positions,  number of SNPs, rank of LD matrices, sample size)
 ```
 16050408        17674294        371     274     91273
@@ -95,7 +95,7 @@ chromosome:
 18296088        19912357        947     502     90231
   ...             ...           ...     ...      ...
 ```
-* step1\_chr22.eig.gz - containing the positive eigenvalues of LD matrix at
+* step1\_chr22.eig.gz - contains the positive eigenvalues of LD matrix at
 each locus, one line per locus
 ```
 39.31792281  31.23990243  23.81549256  23.47296559  20.45343550  ...
@@ -103,7 +103,7 @@ each locus, one line per locus
 82.58157342  67.42588424  59.52766188  43.10471854  32.15181631  ...
     ...          ...          ...          ...          ...
 ```
-* step1\_chr22.prjsq.gz - containing the squared projections of effect
+* step1\_chr22.prjsq.gz - contains the squared projections of effect
 size vector onto the eigenvectors of LD matrix at each locus, one
 line per locus
 ```
@@ -112,7 +112,17 @@ line per locus
 0.00008693  0.00005737  0.00070234  0.00008411  0.00004001  ...
    ...          ...        ...         ...         ...
 ```
-* step1\_chr22.log
+* step1\_chr22.log - contains logging information (e.g. number of SNPs,
+number of SNPs filtered, etc.)
+```
+Command started at: ...
+Command issued: hess.py ...
+Number of SNPs in reference panel: ...
+Number of SNPs in Z-score file: ...
+Number of SNPs in Z-score file after filtering: ...
+Number of loci in partition file: ...
+Command finished at: ...
+```
 
 ###### Step 2 - compute local SNP heritability
 
