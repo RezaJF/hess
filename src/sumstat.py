@@ -27,7 +27,7 @@ def filter_snps(refpanel_leg, snp_beta, snp_beta_info):
     filter_set = set()
     for i in xrange(len(snp_beta_info)):
         snpid = snp_beta_info[i][0]
-        refalt = snp_beta_info[i][1]
+        refalt = snp_beta_info[i][3]
         # check if snp is in reference panel
         if(snpid in snpid_refpanel_refalt):
             refpanel_refalt = snpid_refpanel_refalt[snpid]
@@ -58,6 +58,7 @@ def filter_snps(refpanel_leg, snp_beta, snp_beta_info):
             # snps with alleles not matching reference panel
             else:
                 filter_set.add(i)
+        # snp not found in reference panel
         else:
             filter_set.add(i)
     
@@ -70,4 +71,4 @@ def filter_snps(refpanel_leg, snp_beta, snp_beta_info):
             snp_beta_filt[snpid] = snp_beta[snpid]
             snp_beta_info_filt.append(snp_beta_info[i])
 
-    return snp_beta,snp_beta_info
+    return snp_beta_filt,snp_beta_info_filt

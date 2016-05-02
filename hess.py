@@ -14,7 +14,7 @@ def main():
     # get step 1 arguments
     zsc_file = args.zscore_file
     leg_file = args.legend_file
-    out_file_step1 = args.output_file
+    out_file_step1 = args.output_file_step1
     ref_file = args.reference_panel
     part_file = args.partition_file
     chrom = args.chrom
@@ -22,7 +22,7 @@ def main():
     # get step 2 arguments
     prefix = args.prefix
     num_eig = args.k
-    out_file_step2 = args.out
+    out_file_step2 = args.out_file_step2
     gc = args.lambda_gc
     if(args.tot_h2g is not None):
         tot_h2g = args.tot_h2g[0]
@@ -153,7 +153,7 @@ def get_command_line():
                    help='Z-score file', required=False)
     parser.add_argument('--chrom', dest='chrom', type=str,
                    help='Chromosome number', required=False)
-    parser.add_argument('--output-file', dest='output_file', type=str,
+    parser.add_argument('--output-file-step1', dest='output_file_step1', type=str,
                    help='Output file name', required=False)
     parser.add_argument('--reference-panel', dest='reference_panel', type=str,
                    default=None, help='Reference panel file', required=False)
@@ -166,7 +166,7 @@ def get_command_line():
     # step 2 arguments
     parser.add_argument('--prefix', dest='prefix', type=str,
                    help='Prefix used for step 1', required=False)
-    parser.add_argument('--out', dest='out', type=str,
+    parser.add_argument('--out-file-step2', dest='out_file_step2', type=str,
                    help='Output file name', required=False)
     parser.add_argument('--k', dest='k', type=int, default=50,
                    help='Maximum number of eigenvectors to use (default 50)')
