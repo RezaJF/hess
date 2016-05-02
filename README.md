@@ -8,10 +8,13 @@ statics, while accounting for linkage disequilibrium (LD).
 
 #### File format
 
-###### Reference panel
-Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
+HESS requires GWAS summary statistics and reference panel matching the GWAS
+population as input.
 
 ###### Summary statistics
+
+###### Reference panel
+Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
 
 #### Pipeline
 
