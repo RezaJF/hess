@@ -80,10 +80,12 @@ In the command above, `--chrom` specifies the chromosome number;
 corresponding chromosome; `--reference-panel` specifies the genotype file
 for the reference panel; `--legend-file` specifies the legend file for the
 reference panel; `--partition-file` specifies start and end positions
-of the loci. For input file format, please refer to
+of the loci; `--output-file` specifies the prefix of the output for step 1.
+For input file format, please refer to
 [Input file format](#input_file_format).
 
 ###### Step 2 - compute local SNP heritability
+
 ```{r, engine='sh', count_lines}
 python hess.py \
     --prefix step1 \
