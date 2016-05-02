@@ -39,7 +39,15 @@ results from step 1.
 ###### Step 1
 
 ```{r, engine='bash', count_lines}
-wc -l en_US.twitter.txt 
+for i in $(seq 22); do
+    python hess.py \
+        --chrom $c \
+        --zscore-file zscore.chr"$c" \
+        --reference-panel refpanel_chr"$c"_genotype.gz \
+        --legend-file refpanel_chr"$c"_legend.gz \
+        --partition-file partition_chr"$c".bed
+        --output-file ./step1 \
+done
 ```
 
 ###### Step 2
