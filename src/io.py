@@ -22,7 +22,8 @@ def load_legend(legend_file_name):
     for line in legend_file:
         cols = line.strip().split()
         snpid = cols[0]
-        all_snps.append(snpid)
+        ref_alt = cols[2]+cols[3]
+        all_snps.append((snpid, ref_alt))
         snp_idx[snpid] = idx
         idx += 1
     legend_file.close()
@@ -46,11 +47,12 @@ def load_beta(zscore_file_name):
     for line in zscore_file:
         cols = line.strip().split()
         pos = int(cols[1])
+        ref_alt = cols[2]+cols[3]
         zscore = float(cols[4])
         n = float(cols[5])
         beta = zscore / math.sqrt(n)
         snp_beta[cols[0]] = beta
-        all_snps.append((cols[0], pos, n))
+        all_snps.append((cols[0], pos, n, ref_alt))
     zscore_file.close()
     return (snp_beta, all_snps)
 
@@ -106,7 +108,7 @@ def load_reference_panel(ref_panel_file, locus_snp, lines_to_load,
         line = ref_panel_file.readline()
         if(not line): break
         if(end_line in lines_to_load):
-            snp = legend[end_line]
+            snp = legend[end_line][0]
             cols = line.strip().split()
             ref_data.append(cols)
             snp_idx[snp] = idx

@@ -3,7 +3,7 @@
 
 import numpy as np, numpy.linalg
 import argparse, math, sys, logging, time
-from src import io, step1, step2
+from src import io, step1, step2, sumstat
 
 # main function
 def main():
@@ -57,6 +57,12 @@ def main():
         # load zscore file
         snp_beta,snp_beta_info = io.load_beta(zsc_file)
         logging.info('Number of SNPs in Z-score file: '
+                     '%d' % len(snp_beta))
+       
+        # filter out ambiguous snps and fix signs
+        snp_beta,snp_beta_info = sumstat.filter_snps(refpanel_leg,
+            snp_beta, snp_beta_info)
+        logging.info('Number of SNPs in Z-score file after filtering: '
                      '%d' % len(snp_beta))
         
         # load partition
