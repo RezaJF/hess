@@ -1,10 +1,14 @@
 ## HESS (Heritability Estimation from Summary Statistics)
 
+---
+
 #### Overview
 
 HESS estimates the amount of variance in trait explained by typed SNPs at
 each single locus on the genome (local SNP-heritability) from GWAS summary
 statistics, while accounting for linkage disequilibrium (LD).
+
+---
 
 #### File format
 
@@ -22,11 +26,14 @@ rs1002 30500 G A 0.7238 95831 <br/>
 
 ###### Reference panel
 
-Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
+Can be downloaded
+[here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
 
 ###### Partition file (bed format)
 
-Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src)
+Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src).
+
+---
 
 #### Pipeline
 
@@ -58,3 +65,12 @@ python hess.py \
     --k 50 \
     --out step2.txt
 ```
+
+#### Contact
+
+Please contact Huwenbo Shi (shihuwenbo\_AT\_ucla.edu) for questions on HESS.
+
+#### Reference
+
+Manuscript describing HESS can be found at the
+[preprint](http://biorxiv.org/content/early/2016/01/04/035907).
