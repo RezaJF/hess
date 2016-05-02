@@ -14,7 +14,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 HESS requires as input
 (1) GWAS summary statistics
-(2) Reference panel matching the GWAS population
+(2) reference panel matching the GWAS population
 (3) bed files specifying start and end positions of each locus.
 
 ###### Summary statistics
@@ -71,7 +71,7 @@ do
         --reference-panel refpanel_genotype_chr"$i".gz \
         --legend-file refpanel_legend_chr"$i".gz \
         --partition-file partition_chr"$i".bed
-        --output-file step1 \
+        --output-file step1
 done
 ```
 
