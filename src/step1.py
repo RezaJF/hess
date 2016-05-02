@@ -92,12 +92,12 @@ def output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg, snp_beta,
     snp_beta_info, part, ref_file, out_file):
     
     # open files to read and write
-    out_file_info = out_file+'_chr'+chrom+'.info'
-    out_file_proj = out_file+'_chr'+chrom+'.prjsq'
-    out_file_eig = out_file+'_chr'+chrom+'.eig'
-    out_file_info = open(out_file_info, 'w')
-    out_file_proj = open(out_file_proj, 'w')
-    out_file_eig = open(out_file_eig, 'w')
+    out_file_info = out_file+'_chr'+chrom+'.info.gz'
+    out_file_proj = out_file+'_chr'+chrom+'.prjsq.gz'
+    out_file_eig = out_file+'_chr'+chrom+'.eig.gz'
+    out_file_info = gzip.open(out_file_info, 'wb')
+    out_file_proj = gzip.open(out_file_proj, 'wb')
+    out_file_eig = gzip.open(out_file_eig, 'wb')
     ref_file = gzip.open(ref_file)
     
     # iterate through locus
