@@ -28,7 +28,7 @@ rs1002 30500 G A 0.7238 95831
 
 ###### Reference panel
 
-Can be downloaded
+Reference panel for SNPs with MAF > 5% in the EUR population Can be downloaded
 [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
 
 ###### Partition file (bed format)
