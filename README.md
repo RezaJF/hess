@@ -11,7 +11,7 @@ statics, while accounting for linkage disequilibrium (LD).
 HESS requires as input: <br/>
 1. GWAS summary statistics <br/>
 2. Reference panel matching the GWAS population <br/>
-3. bed files specifying how the genome is partitioned
+3. bed files specifying start and end positions of the loci
 
 ###### Summary statistics
 
@@ -23,6 +23,10 @@ rs1002 30500 G A 0.7238 95831 <br/>
 ###### Reference panel
 
 Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
+
+###### bed file
+
+Can be download [here](https://bitbucket.org/nygcresearch/ldetect-data/src)
 
 #### Pipeline
 
