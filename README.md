@@ -37,18 +37,23 @@ HESS obtain local heritability estimates and their standard errors, using
 results from step 1.
 
 ###### Step 1
-
 ```{r, engine='sh', count_lines}
 # can be parallelized
 for i in $(seq 22); do
     python hess.py \
         --chrom $c \
         --zscore-file zscore.chr"$c" \
-        --reference-panel refpanel_chr"$c"_genotype.gz \
-        --legend-file refpanel_chr"$c"_legend.gz \
+        --reference-panel refpanel_genotype_chr"$c".gz \
+        --legend-file refpanel_legend_chr"$c".gz \
         --partition-file partition_chr"$c".bed
-        --output-file ./step1 \
+        --output-file step1 \
 done
 ```
 
 ###### Step 2
+```{r, engine='sh', count_lines}
+python hess.py \
+    --prefix step1 \
+    --k 50 \
+    --out step2.txt
+```
