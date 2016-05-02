@@ -38,7 +38,8 @@ results from step 1.
 
 ###### Step 1
 
-```{r, engine='bash', count_lines}
+```{r, engine='sh', count_lines}
+# can be parallelized
 for i in $(seq 22); do
     python hess.py \
         --chrom $c \
