@@ -142,6 +142,23 @@ during step 1, "step1", in this case; `--k` specifies the maximum number
 of eigenvectors to use in estimating local SNP heritability; `--out`
 specifies the name of the output file.
 
+After executing the command above, 2 files will be created.
+
+* step2.txt - contains local SNP heritability estimates (including
+chromosome number, locus start position, locus end position, number of SNPs
+in locus, number of eigenvectors used, local SNP heritability, variance)
+
+```
+chr     start   end     num_snp k       local_h2g       var
+1       10583   1892606 158     24      0.0001786340    0.000000011374
+1       1892607 3582735 814     40      0.0004164805    0.000000039661
+1       3582736 4380810 558     40      0.0001844619    0.000000027595
+1       4380811 5913892 1879    40      0.0000738749    0.000000032164
+...       ...     ...    ...    ...       ...             ...
+```
+
+* step2.txt.log - contains logging information
+
 ---
 
 #### Contact
