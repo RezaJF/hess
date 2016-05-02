@@ -66,9 +66,14 @@ python hess.py \
     --out step2.txt
 ```
 
+---
+
 #### Contact
 
-Please contact Huwenbo Shi (shihuwenbo\_AT\_ucla.edu) for questions on HESS.
+Please contact Huwenbo Shi (shihuwenbo\_AT\_ucla.edu) for questions
+related to HESS.
+
+---
 
 #### Reference
 
