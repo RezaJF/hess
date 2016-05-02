@@ -39,7 +39,7 @@ rs1002 30500 G A 0.7238 95831
 
 1000 Genomes Project (phase 3) reference panel for SNPs with MAF > 5% in the
 EUR population can be downloaded
-[here](https://github.com/huwenboshi/hess). 
+[here](https://drive.google.com/open?id=0B0OmLzMQAvWqc3FPcVRDWkdvc2c). 
 
 ###### Partition file (bed format)
 
