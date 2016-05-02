@@ -8,8 +8,10 @@ statics, while accounting for linkage disequilibrium (LD).
 
 #### File format
 
-HESS requires GWAS summary statistics and reference panel matching the GWAS
-population as input.
+HESS requires as input: <br/>
+1. GWAS summary statistics <br/>
+2. Reference panel matching the GWAS population <br/>
+3. bed files specifying how the genome is partitioned
 
 ###### Summary statistics
 
@@ -26,10 +28,12 @@ Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhta
 
 HESS estimates local heritability in 2 step2. In step 1, HESS computes
 the eigenvalues of LD matrices, and the squared projections of GWAS effect
-size vector onto the corresponding eigenvectors of LD matrices. Using results
-from step 1, in step 2 HESS obtain local heritability estimates and their
-standard errors.
+size vector onto the corresponding eigenvectors of LD matrices. In step 2,
+HESS obtain local heritability estimates and their standard errors, using
+results from step 1.
 
 ###### Step 1
+
+df
 
 ###### Step 2
