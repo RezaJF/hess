@@ -166,7 +166,7 @@ def get_command_line():
     # step 2 arguments
     parser.add_argument('--prefix', dest='prefix', type=str,
                    help='Prefix used for step 1', required=False)
-    parser.add_argument('--out-file-step2', dest='out_file_step2', type=str,
+    parser.add_argument('--output-file-step2', dest='out_file_step2', type=str,
                    help='Output file name', required=False)
     parser.add_argument('--k', dest='k', type=int, default=50,
                    help='Maximum number of eigenvectors to use (default 50)')

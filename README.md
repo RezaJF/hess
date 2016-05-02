@@ -10,6 +10,13 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 ---
 
+#### Software requirement
+
+HESS requires [NumPy](http://www.numpy.org/) and 
+[Python 2.7](https://www.python.org/download/releases/2.7/).
+
+---
+
 #### <a name="input_file_format"></a> Input file format
 
 HESS requires as input
@@ -71,7 +78,7 @@ do
         --reference-panel refpanel_genotype_chr"$i".gz \
         --legend-file refpanel_legend_chr"$i".gz \
         --partition-file partition_chr"$i".bed
-        --output-file step1
+        --output-file-step1 step1
 done
 ```
 
@@ -80,7 +87,7 @@ In the command above, `--chrom` specifies the chromosome number;
 corresponding chromosome; `--reference-panel` specifies the genotype file
 for the reference panel; `--legend-file` specifies the legend file for the
 reference panel; `--partition-file` specifies start and end positions
-of the loci; `--output-file` specifies the prefix of the output for step 1.
+of the loci; `--output-file-step1` specifies the prefix of the output for step 1.
 For input file format, please refer to
 [Input file format](#input_file_format).
 
@@ -134,13 +141,13 @@ heritability estimates and their standard error.
 python hess.py \
     --prefix step1 \
     --k 50 \
-    --out step2.txt
+    --output-file-step2 step2.txt
 ```
 
 In the command above, `--prefix` specifies prefix of the files generated
 during step 1, "step1", in this case; `--k`, default at 50, specifies the
 maximum number of eigenvectors to use in estimating local SNP heritability;
-`--out` specifies the name of the output file. 
+`--output-file-step2` specifies the name of the output file. 
 
 After executing the command above, 2 files will be created.
 
