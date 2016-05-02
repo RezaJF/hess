@@ -1,6 +1,6 @@
 ## HESS (Heritability Estimation from Summary Statistics)
 
-===
+---
 
 #### Overview
 
@@ -8,7 +8,7 @@ HESS estimates the amount of variance in trait explained by typed SNPs at
 each single locus on the genome (local SNP-heritability) from GWAS summary
 statistics, while accounting for linkage disequilibrium (LD).
 
-===
+---
 
 #### <a name="input_file_format"></a> Input file format
 
@@ -45,7 +45,7 @@ EUR population can be downloaded
 
 Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src).
 
-===
+---
 
 #### Pipeline
 
@@ -170,6 +170,8 @@ Estimated total h2g: ...
 Command finished at: ...
 ```
 
+...
+
 ###### Additional flags for step 2
 
 For step 2, HESS has several additional flags:
@@ -189,14 +191,14 @@ the threshold, the smaller the standard error (at the cost of downward bias);
 error of the estimates when total SNP heritability is available, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias).
 
-===
+---
 
 #### Contact
 
 Please contact Huwenbo Shi (shihuwenbo\_AT\_ucla.edu) for questions
 related to HESS.
 
-===
+---
 
 #### Reference
 
