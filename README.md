@@ -107,7 +107,17 @@ each locus, one line per locus
     ...          ...          ...          ...          ...
 ```
 
-3. step1\_chr22.prjsq.gz
+3. step1\_chr22.prjsq.gz - containing the squared projections of effect
+size vector onto the eigenvectors of LD matrix at each locus, one
+line per locus
+
+```
+0.00008940  0.00001401  0.00013805  0.00009906  0.00007841  ...
+0.00054948  0.00001756  0.00008532  0.00002303  0.00004706  ...
+0.00008693  0.00005737  0.00070234  0.00008411  0.00004001  ...
+   ...          ...        ...         ...         ...
+```
+
 4. step1\_chr22.log
 
 ###### Step 2 - compute local SNP heritability
