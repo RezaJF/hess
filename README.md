@@ -55,7 +55,10 @@ size vector onto the eigenvectors of LD matrices. In step 2, HESS computes
 local SNP heritability estimates and their standard errors, using results
 from step 1.
 
-###### Step 1 - compute eigenvalues and squared projections
+###### Step 1 - compute eigenvalues and projections
+In this step, HESS computes the eigenvalues \(w\_i\) of LD matrices, and the squared projections of GWAS effect
+size vector onto the eigenvectors of LD matrices.
+
 ```{r, engine='sh', count_lines}
 # can be parallelized
 for i in $(seq 22)
