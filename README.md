@@ -1,4 +1,4 @@
-## HESS (Heritability Estimation from Summary Statistics v 0.9)
+## HESS (Heritability Estimation from Summary Statistics v0.1-beta)
 
 ---
 
