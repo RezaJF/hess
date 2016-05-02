@@ -56,12 +56,13 @@ local SNP heritability estimates and their standard errors, using results
 from step 1.
 
 ###### Step 1 - compute eigenvalues and projections
-In this step, HESS computes the eigenvalues  $y = x^2 \hbox{ when $x > 2$}
-of LD matrices, and the squared projections of GWAS effect
-size vector onto the eigenvectors of LD matrices.
+
+In this step, HESS computes the eigenvalues of LD matrices, and the squared
+projections of GWAS effect size vector onto the eigenvectors of LD matrices.
+The following code snippet illustrates the 1st step of HESS.
 
 ```{r, engine='sh', count_lines}
-# can be parallelized
+# can be parallelized, i.e. one CPU for each chromosome
 for i in $(seq 22)
 do
     python hess.py \
