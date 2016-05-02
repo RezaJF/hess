@@ -24,6 +24,12 @@ Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhta
 
 #### Pipeline
 
+HESS estimates local heritability in 2 step2. In step 1, HESS computes
+the eigenvalues of LD matrices, and the squared projections of GWAS effect
+size vector onto the corresponding eigenvectors of LD matrices. Using results
+from step 1, in step 2 HESS obtain local heritability estimates and their
+standard errors.
+
 ###### Step 1
 
 ###### Step 2
