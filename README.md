@@ -19,6 +19,12 @@ HESS requires as input
 
 ###### Summary statistics
 
+To improve efficiency and parallelizability, HESS requires that users have
+one summary statistics file for each chromosome.
+For each SNP, HESS requires 6 information (in the listed order):
+(1) rs ID (2) position (3) reference allele (4) alternative allele
+(5) Z-score (6) sample size.
+
 ```
 rsID pos A0 A1 Z-score N
 rs1000 29321 G A -1.6434 91021
@@ -28,7 +34,7 @@ rs1002 30500 G A 0.7238 95831
 
 ###### Reference panel
 
-Reference panel for SNPs with MAF > 5% in the EUR population Can be downloaded
+Reference panel for SNPs with MAF > 5% in the EUR population can be downloaded
 [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
 
 ###### Partition file (bed format)
