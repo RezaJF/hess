@@ -138,10 +138,10 @@ def load_step1(prefix):
     # load info
     locus_info = []
     for i in xrange(1,23):
-        fnm = '%s_chr%d.info' % (prefix, i)
+        fnm = '%s_chr%d.info.gz' % (prefix, i)
         if(not os.path.exists(fnm)):
             continue
-        fnm = open(fnm)
+        fnm = gzip.open(fnm)
         for line in fnm:
             line = line.strip()
             cols = line.split()
@@ -151,10 +151,10 @@ def load_step1(prefix):
     # load eigs
     all_eig = []
     for i in xrange(1,23):
-        fnm = '%s_chr%d.eig' % (prefix, i)
+        fnm = '%s_chr%d.eig.gz' % (prefix, i)
         if(not os.path.exists(fnm)):
             continue
-        fnm = open(fnm)
+        fnm = gzip.open(fnm)
         for line in fnm:
             line = line.strip()
             cols = line.split()
@@ -165,10 +165,10 @@ def load_step1(prefix):
     # load prjsq
     all_prj = []
     for i in xrange(1,23):
-        fnm = '%s_chr%d.prjsq' % (prefix, i)
+        fnm = '%s_chr%d.prjsq.gz' % (prefix, i)
         if(not os.path.exists(fnm)):
             continue
-        fnm = open(fnm)
+        fnm = gzip.open(fnm)
         for line in fnm:
             line = line.strip()
             cols = line.split()

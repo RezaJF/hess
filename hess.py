@@ -2,7 +2,7 @@
 # (c) 2016-2021 Huwenbo Shi
 
 import numpy as np, numpy.linalg
-import argparse, math, sys
+import argparse, math, sys, logging, time
 from src import io, step1, step2
 
 # main function
@@ -41,20 +41,37 @@ def main():
        prefix          is     None and
        out_file_step2  is     None and
        args.tot_h2g    is     None):
-        
+
+        # starting the log
+        logging.basicConfig(filename=out_file_step1+'_chr'+chrom+'.log',
+            level=logging.INFO, format='%(message)s', filemode="w")
+        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+        logging.info('Command started at: %s' % cur_time)
+        logging.info('Command issued: %s' % ' '.join(sys.argv))
+
         # load snp in legend
         refpanel_snp_idx, refpanel_leg = io.load_legend(leg_file)
-
+        logging.info('Number of SNPs in reference panel: '
+                     '%d' % len(refpanel_leg))
+        
         # load zscore file
         snp_beta,snp_beta_info = io.load_beta(zsc_file)
-    
+        logging.info('Number of SNPs in Z-score file: '
+                     '%d' % len(snp_beta))
+        
         # load partition
         part = io.load_partition(part_file)
-    
+        logging.info('Number of loci in partition file: '
+                     '%d' % len(part))
+        
         # output eigenvalue and projection squared
         step1.output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg,
             snp_beta, snp_beta_info, part, ref_file, out_file_step1)
-    
+        
+        # ending the log
+        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+        logging.info('Command finished at: %s' % cur_time)
+
     ##########     run step 2     ##########
     elif(zsc_file        is     None and 
          leg_file        is     None and
