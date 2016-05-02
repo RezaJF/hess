@@ -87,9 +87,18 @@ For input file format, please refer to
 After executing the command above, 4 files will be created for each
 chromosome:
 
-1. step1\_chr22.eig.gz
-2. step1\_chr22.prjsq.gz
-3. step1\_chr22.info.gz
+1. step1\_chr22.info.gz - containing the information of each locus (start and
+   end positions,  number of SNPs, rank of LD matrices, sample size)
+   ```
+   16050408        17674294        371     274     91273
+   17674295        18296087        419     306     89182
+   18296088        19912357        947     502     90231
+   19912358        22357324        983     502     88739
+   22357325        23712646        755     466     91213
+   23712647        24984203        648     378     84929
+   ```
+2. step1\_chr22.eig.gz
+3. step1\_chr22.prjsq.gz
 4. step1\_chr22.log
 
 ###### Step 2 - compute local SNP heritability
