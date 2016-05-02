@@ -138,9 +138,9 @@ python hess.py \
 ```
 
 In the command above, `--prefix` specifies prefix of the files generated
-during step 1, "step1", in this case; `--k` specifies the maximum number
-of eigenvectors to use in estimating local SNP heritability; `--out`
-specifies the name of the output file. 
+during step 1, "step1", in this case; `--k`, default at 50, specifies the
+maximum number of eigenvectors to use in estimating local SNP heritability;
+`--out` specifies the name of the output file. 
 
 After executing the command above, 2 files will be created.
 
@@ -170,14 +170,22 @@ Estimated total h2g: ...
 Command finished at: ...
 ```
 
-For step 2, HESS has several additional flags: `--lambda_gc` allows users to
-specify their own genomic control factor to re-inflate the summary statistics;
-`--tot-h2g <h2g>,<s.e.>` allows users to specify total SNP heritability
-(e.g. estimated using individual level data) of the trait; 
-`--sense-threshold-joint` default at 2.0, allows users to control standard
+###### Additional flags for step 2
+
+For step 2, HESS has several additional flags:
+
+* `--lambda_gc` allows users to specify their own genomic control factor to
+re-inflate the summary statistics, if not specified, HESS will estimates
+the genomic control factor from data
+
+* `--tot-h2g <h2g>,<s.e.>` allows users to specify total SNP heritability
+(e.g. estimated using individual level data) of the trait
+
+* `--sense-threshold-joint` default at 2.0, allows users to control standard
 error of the estimates when total SNP heritability is not known, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias);
-`--sense-threshold-indep` default at 0.5, allows users to control standard
+
+* `--sense-threshold-indep` default at 0.5, allows users to control standard
 error of the estimates when total SNP heritability is available, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias).
 
