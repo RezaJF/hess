@@ -12,10 +12,10 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 #### File format
 
-HESS requires as input: <br/>
-1. GWAS summary statistics <br/>
-2. Reference panel matching the GWAS population <br/>
-3. bed files specifying start and end positions of each locus
+HESS requires as input:
+(1) GWAS summary statistics,
+(2) Reference panel matching the GWAS population,
+(3) bed files specifying start and end positions of each locus.
 
 ###### Summary statistics
 
