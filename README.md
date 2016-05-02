@@ -84,6 +84,14 @@ of the loci; `--output-file` specifies the prefix of the output for step 1.
 For input file format, please refer to
 [Input file format](#input_file_format).
 
+After executing the command above, 4 files will be created for each
+chromosome:
+
+1. step1\_chr22.eig.gz
+2. step1\_chr22.prjsq.gz
+3. step1\_chr22.info.gz
+4. step1\_chr22.log
+
 ###### Step 2 - compute local SNP heritability
 
 ```{r, engine='sh', count_lines}
