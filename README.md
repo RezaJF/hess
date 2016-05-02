@@ -10,7 +10,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 ---
 
-#### File format
+#### Input file format
 
 HESS requires as input
 (1) GWAS summary statistics
@@ -52,10 +52,10 @@ Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src).
 HESS estimates local heritability in 2 steps. In step 1, HESS computes
 the eigenvalues of LD matrices, and the squared projections of GWAS effect
 size vector onto the eigenvectors of LD matrices. In step 2, HESS computes
-local heritability estimates and their standard errors, using results
+local SNP heritability estimates and their standard errors, using results
 from step 1.
 
-###### Step 1
+###### Step 1 - compute eigenvalues and squared projections
 ```{r, engine='sh', count_lines}
 # can be parallelized
 for i in $(seq 22)
@@ -70,7 +70,7 @@ do
 done
 ```
 
-###### Step 2
+###### Step 2 - compute local SNP heritability
 ```{r, engine='sh', count_lines}
 python hess.py \
     --prefix step1 \
