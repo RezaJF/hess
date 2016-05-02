@@ -89,35 +89,29 @@ chromosome:
 
 1. step1\_chr22.info.gz - containing the information of each locus (start and
    end positions,  number of SNPs, rank of LD matrices, sample size)
-
 ```
 16050408        17674294        371     274     91273
 17674295        18296087        419     306     89182
 18296088        19912357        947     502     90231
   ...             ...           ...     ...      ...
 ```
-
 2. step1\_chr22.eig.gz - containing the positive eigenvalues of LD matrix at
 each locus, one line per locus
-
 ```
 39.31792281  31.23990243  23.81549256  23.47296559  20.45343550  ...
 48.73186142  26.95692375  25.32769526  22.11750791  20.55766423  ...
 82.58157342  67.42588424  59.52766188  43.10471854  32.15181631  ...
     ...          ...          ...          ...          ...
 ```
-
 3. step1\_chr22.prjsq.gz - containing the squared projections of effect
 size vector onto the eigenvectors of LD matrix at each locus, one
 line per locus
-
 ```
 0.00008940  0.00001401  0.00013805  0.00009906  0.00007841  ...
 0.00054948  0.00001756  0.00008532  0.00002303  0.00004706  ...
 0.00008693  0.00005737  0.00070234  0.00008411  0.00004001  ...
    ...          ...        ...         ...         ...
 ```
-
 4. step1\_chr22.log
 
 ###### Step 2 - compute local SNP heritability
