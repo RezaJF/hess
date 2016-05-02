@@ -79,6 +79,8 @@ arguments:
 return:
     1. an np.matrix of unbiased local heritability estimates
     2. a list of (raw_est, k)
+    3. estimated/specified lambda gc
+    4. total number of snps
 """
 def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     eig_thres, sense_thres, gc):
@@ -90,8 +92,8 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
     
     # choose max k
     num_win = len(locus_info)
-    num_snp = np.sum([float(elem[4]) for elem in locus_info])
-    tot_n = np.sum([float(elem[5])*float(elem[4]) for elem in locus_info])
+    num_snp = np.sum([float(elem[3]) for elem in locus_info])
+    tot_n = np.sum([float(elem[5])*float(elem[3]) for elem in locus_info])
     avg_n = tot_n/num_snp
     max_k = (sense_thres*avg_n-avg_n)/(sense_thres*num_win+eps)
     max_k = min(int(math.ceil(max_k)), num_eig)
@@ -110,7 +112,7 @@ def get_local_h2g_joint(locus_info, all_eig, all_prj, num_eig,
         b[i,0] = n*raw_est[i][0]-raw_est[i][1]
     est = np.linalg.pinv(A)*b
     
-    return est,raw_est
+    return est,raw_est,gc,num_snp
 
 
 """
@@ -158,6 +160,8 @@ arguments:
 return:
     1. an np.matrix of unbiased local heritability estimates
     2. a list of (raw_est, k)
+    3. estimated/specified lambda gc
+    4. total number of snps
 """
 def get_local_h2g_indep(locus_info, all_eig, all_prj, num_eig,
         eig_thres, sense_thres, gc, tot_h2g):
@@ -174,13 +178,14 @@ def get_local_h2g_indep(locus_info, all_eig, all_prj, num_eig,
     max_k = min(int(math.ceil(max_k)), num_eig)
 
     # adjust for bias
+    num_snp = 0
     raw_est = get_raw_h2g(locus_info, all_eig, all_prj, max_k, eig_thres, gc)
     est = np.matrix(np.zeros((num_win,1)))
     for i in xrange(num_win):
         est[i,0] = raw_est[i][0]
         est[i,0] -= (1.0-tot_h2g)*raw_est[i][1]/(float(locus_info[i][5])+eps)
-    
-    return est,raw_est
+        num_snp += int(locus_info[i][3])
+    return est,raw_est,gc,num_snp
 
 
 """

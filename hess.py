@@ -88,25 +88,54 @@ def main():
          prefix          is not None and
          out_file_step2  is not None):
         
+        # starting the log
+        logging.basicConfig(filename=out_file_step2+'.log',
+            level=logging.INFO, format='%(message)s', filemode="w")
+        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+        logging.info('Command started at: %s' % cur_time)
+        logging.info('Command issued: %s' % ' '.join(sys.argv))
+        
         # load step1
         locus_info,all_eig,all_prj = io.load_step1(prefix)
-        
+        logging.info('Number of loci from step 1: %d' % len(locus_info))
+
         # estimate h2g jointly when total h2g is not provided
         if(args.tot_h2g is None):
-            all_h2g,raw_est = step2.get_local_h2g_joint(locus_info, all_eig,
-                                        all_prj, num_eig, eig_thres,
-                                        sense_thres_joint, gc)
+            
+            # estimate local heritability
+            all_h2g,raw_est,gc_est,num_tot_snp = step2.get_local_h2g_joint(
+                locus_info, all_eig, all_prj, num_eig, eig_thres,
+                sense_thres_joint, gc)
+            logging.info('Total number of SNPs: %d' % num_tot_snp)
+            logging.info('Using lambda gc: %.2f' % gc_est)
+
+            # compute the variance of estimate
             all_var = step2.get_var_est_joint(locus_info, all_h2g)
+            logging.info('Estimated total h2g: %.3f (%.4f)' % (
+                np.sum(all_h2g), math.sqrt(np.sum(all_var))))
+
         # estimate h2g independently when total h2g is provided
         else:
-            all_h2g,raw_est = step2.get_local_h2g_indep(locus_info, all_eig,
-                                        all_prj, num_eig, eig_thres,
-                                        sense_thres_indep, gc, tot_h2g)
-            all_var = step2.get_var_est_indep(locus_info, all_h2g, tot_h2g_se)
 
+            # estimate local heritability
+            all_h2g,raw_est,gc_est,num_tot_snp = step2.get_local_h2g_indep(
+                locus_info, all_eig, all_prj, num_eig, eig_thres,
+                sense_thres_indep, gc, tot_h2g)
+            logging.info('Total number of SNPs: %d' % num_tot_snp)
+            logging.info('Using lambda gc: %.2f' % gc_est)
+            
+            # compute the variance of estimate
+            all_var = step2.get_var_est_indep(locus_info, all_h2g, tot_h2g_se)
+            logging.info('Estimated total h2g: %.3f (%.4f)' % (
+                np.sum(all_h2g), math.sqrt(np.sum(all_var))))
+        
         # write output
         step2.output_local_h2g(out_file_step2, locus_info, raw_est,
                 all_h2g, all_var)
+
+        # ending the log
+        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+        logging.info('Command finished at: %s' % cur_time)
     
     ##########     unrecognized     ##########
     else:
