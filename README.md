@@ -177,10 +177,10 @@ the genomic control factor from data
 of the trait
 * `--sense-threshold-joint` default at 2.0, allows users to control standard
 error of the estimates when total SNP heritability is not known, the smaller
-the threshold, the smaller the standard error (at the cost of downward bias);
+the threshold, the smaller the standard error (at the cost of downward bias)
 * `--sense-threshold-indep` default at 0.5, allows users to control standard
 error of the estimates when total SNP heritability is available, the smaller
-the threshold, the smaller the standard error (at the cost of downward bias).
+the threshold, the smaller the standard error (at the cost of downward bias)
 
 ---
 
