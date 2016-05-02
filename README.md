@@ -170,8 +170,6 @@ Estimated total h2g: ...
 Command finished at: ...
 ```
 
-******
-
 ###### Additional flags for step 2
 
 For step 2, HESS has several additional flags:
