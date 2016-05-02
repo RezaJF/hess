@@ -10,7 +10,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 ---
 
-#### Input file format
+#### <a name="input_file_format"></a> Input file format
 
 HESS requires as input
 (1) GWAS summary statistics
@@ -62,7 +62,7 @@ projections of GWAS effect size vector onto the eigenvectors of LD matrices.
 The following code snippet illustrates the 1st step of HESS.
 
 ```{r, engine='sh', count_lines}
-# can be parallelized, i.e. one CPU for each chromosome
+# this for loop can be parallelized, i.e. one CPU for each chromosome
 for i in $(seq 22)
 do
     python hess.py \
@@ -74,6 +74,14 @@ do
         --output-file step1 \
 done
 ```
+
+In the command above, `--chrom` specifies the chromosome number;
+`--zscore-file` specifies the summary statistics for SNPs in the
+corresponding chromosome; `--reference-panel` specifies the genotype file
+for the reference panel; `--legend-file` specifies the legend file for the
+reference panel; `--partition-file` specifies start and end positions
+of the loci. For input file format, please refer to
+[Input file format](#input_file_format).
 
 ###### Step 2 - compute local SNP heritability
 ```{r, engine='sh', count_lines}
