@@ -3,15 +3,15 @@
 #### Overview
 
 HESS estimates the amount of variance in trait explained by typed SNPs at
-each single loci on the genome (local SNP-heritability) from GWAS summary
-statics, while accounting for linkage disequilibrium (LD).
+each single locus on the genome (local SNP-heritability) from GWAS summary
+statistics, while accounting for linkage disequilibrium (LD).
 
 #### File format
 
 HESS requires as input: <br/>
 1. GWAS summary statistics <br/>
 2. Reference panel matching the GWAS population <br/>
-3. bed files specifying start and end positions of the loci
+3. bed files specifying start and end positions of each locus
 
 ###### Summary statistics
 
@@ -30,22 +30,23 @@ Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src)
 
 #### Pipeline
 
-HESS estimates local heritability in 2 step2. In step 1, HESS computes
+HESS estimates local heritability in 2 steps. In step 1, HESS computes
 the eigenvalues of LD matrices, and the squared projections of GWAS effect
-size vector onto the corresponding eigenvectors of LD matrices. In step 2,
-HESS obtain local heritability estimates and their standard errors, using
-results from step 1.
+size vector onto the eigenvectors of LD matrices. In step 2, HESS computes
+local heritability estimates and their standard errors, using results
+from step 1.
 
 ###### Step 1
 ```{r, engine='sh', count_lines}
 # can be parallelized
-for i in $(seq 22); do
+for i in $(seq 22)
+do
     python hess.py \
-        --chrom $c \
-        --zscore-file zscore.chr"$c" \
-        --reference-panel refpanel_genotype_chr"$c".gz \
-        --legend-file refpanel_legend_chr"$c".gz \
-        --partition-file partition_chr"$c".bed
+        --chrom $i \
+        --zscore-file zscore.chr"$i" \
+        --reference-panel refpanel_genotype_chr"$i".gz \
+        --legend-file refpanel_legend_chr"$i".gz \
+        --partition-file partition_chr"$i".bed
         --output-file step1 \
 done
 ```

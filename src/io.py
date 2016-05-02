@@ -43,8 +43,12 @@ return:
 def load_beta(zscore_file_name):
     all_snps = []
     snp_beta = dict()
+    first_line_read = False
     zscore_file = open(zscore_file_name, 'r')
     for line in zscore_file:
+        if(not first_line_read):
+            first_line_read = True
+            continue
         cols = line.strip().split()
         pos = int(cols[1])
         ref_alt = cols[2]+cols[3]
