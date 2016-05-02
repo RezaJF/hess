@@ -147,7 +147,6 @@ After executing the command above, 2 files will be created.
 * step2.txt - contains local SNP heritability estimates (including
 chromosome number, locus start position, locus end position, number of SNPs
 in locus, number of eigenvectors used, local SNP heritability, variance)
-
 ```
 chr     start   end     num_snp k       local_h2g       var
 1       10583   1892606 158     24      0.0001786340    0.000000011374
@@ -156,10 +155,8 @@ chr     start   end     num_snp k       local_h2g       var
 1       4380811 5913892 1879    40      0.0000738749    0.000000032164
 ...       ...     ...    ...    ...       ...             ...
 ```
-
 * step2.txt.log - contains logging information (e.g. estimated genomic
 control factor, total SNP heritability, etc.)
-
 ```
 Command started at: ...
 Command issued: ...
@@ -172,19 +169,15 @@ Command finished at: ...
 
 ###### Additional flags for step 2
 
-For step 2, HESS has several additional flags:
-
+For step 2, HESS has 4 additional flags:
 * `--lambda_gc` allows users to specify their own genomic control factor to
 re-inflate the summary statistics, if not specified, HESS will estimates
 the genomic control factor from data
-
 * `--tot-h2g <h2g>,<s.e.>` allows users to specify total SNP heritability
 of the trait
-
 * `--sense-threshold-joint` default at 2.0, allows users to control standard
 error of the estimates when total SNP heritability is not known, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias);
-
 * `--sense-threshold-indep` default at 0.5, allows users to control standard
 error of the estimates when total SNP heritability is available, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias).
