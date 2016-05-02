@@ -24,9 +24,9 @@ rs1002 30500 G A 0.7238 95831 <br/>
 
 Can be downloaded [here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
 
-###### bed file
+###### Partition file (bed format)
 
-Can be download [here](https://bitbucket.org/nygcresearch/ldetect-data/src)
+Can be downloaded [here](https://bitbucket.org/nygcresearch/ldetect-data/src)
 
 #### Pipeline
 
@@ -38,6 +38,8 @@ results from step 1.
 
 ###### Step 1
 
-df
+```{r, engine='bash', count_lines}
+wc -l en_US.twitter.txt 
+```
 
 ###### Step 2
