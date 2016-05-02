@@ -179,7 +179,7 @@ re-inflate the summary statistics, if not specified, HESS will estimates
 the genomic control factor from data
 
 * `--tot-h2g <h2g>,<s.e.>` allows users to specify total SNP heritability
-(e.g. estimated using individual level data) of the trait
+of the trait
 
 * `--sense-threshold-joint` default at 2.0, allows users to control standard
 error of the estimates when total SNP heritability is not known, the smaller
