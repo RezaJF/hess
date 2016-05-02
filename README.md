@@ -25,7 +25,8 @@ position. For each SNP, HESS requires 6 information (in the listed order):
 (1) rs ID (2) position (3) reference allele (4) alternative allele
 (5) Z-score (6) sample size. HESS internally filters out strand-ambiguous
 SNPs and flips signs of Z-scores based on alleles in the reference panel.
-However, user awareness of these details are highly recommended.
+However, user awareness of these details are highly recommended. The
+following is an example of summary statistics file.
 
 ```
 rsID pos A0 A1 Z-score N
@@ -36,8 +37,9 @@ rs1002 30500 G A 0.7238 95831
 
 ###### Reference panel
 
-Reference panel for SNPs with MAF > 5% in the EUR population can be downloaded
-[here](https://drive.google.com/open?id=0B0OmLzMQAvWqT3pnTUhtaTBKbDA).
+1000 Genomes Project (phase 3) reference panel for SNPs with MAF > 5% in the
+EUR population can be downloaded
+[here](https://github.com/huwenboshi/hess). 
 
 ###### Partition file (bed format)
 
