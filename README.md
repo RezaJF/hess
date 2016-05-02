@@ -19,11 +19,13 @@ HESS requires as input
 
 ###### Summary statistics
 
-To improve efficiency and parallelizability, HESS requires that users have
-one summary statistics file for each chromosome.
-For each SNP, HESS requires 6 information (in the listed order):
+To improve computational efficiency and parallelizability, HESS requires that
+users split summary statistics into chromosomes and that SNPs are sorted by
+position. For each SNP, HESS requires 6 information (in the listed order):
 (1) rs ID (2) position (3) reference allele (4) alternative allele
-(5) Z-score (6) sample size.
+(5) Z-score (6) sample size. HESS internally filters out strand-ambiguous
+SNPs and flips signs of Z-scores based on alleles in the reference panel.
+However, user awareness of these details are highly recommended.
 
 ```
 rsID pos A0 A1 Z-score N
