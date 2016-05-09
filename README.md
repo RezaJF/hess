@@ -1,4 +1,4 @@
-## HESS (Heritability Estimation from Summary Statistics v0.1-beta)
+## HESS (Heritability Estimation from Summary Statistics v0.2-beta)
 
 ---
 
@@ -77,11 +77,11 @@ for i in $(seq 22)
 do
     python hess.py \
         --chrom $i \
-        --zscore-file zscore.chr"$i" \
+        --h2g zscore.chr"$i" \
         --reference-panel refpanel_genotype_chr"$i".gz \
         --legend-file refpanel_legend_chr"$i".gz \
         --partition-file partition_chr"$i".bed
-        --output-file-step1 step1
+        --out step1
 done
 ```
 
@@ -104,7 +104,7 @@ obtained for chromosome 22.
 16050408        17674294        371     274     91273
 17674295        18296087        419     306     89182
 18296088        19912357        947     502     90231
-  ...             ...           ...     ...      ...
+...             ...             ...     ...     ...
 ```
 * step1\_chr22.eig.gz - contains the positive eigenvalues of LD matrix at
 each locus, one line per locus
@@ -112,7 +112,7 @@ each locus, one line per locus
 39.31792281  31.23990243  23.81549256  23.47296559  20.45343550  ...
 48.73186142  26.95692375  25.32769526  22.11750791  20.55766423  ...
 82.58157342  67.42588424  59.52766188  43.10471854  32.15181631  ...
-    ...          ...          ...          ...          ...
+...          ...          ...          ...          ...
 ```
 * step1\_chr22.prjsq.gz - contains the squared projections of effect
 size vector onto the eigenvectors of LD matrix at each locus, one
@@ -121,7 +121,7 @@ line per locus
 0.00008940  0.00001401  0.00013805  0.00009906  0.00007841  ...
 0.00054948  0.00001756  0.00008532  0.00002303  0.00004706  ...
 0.00008693  0.00005737  0.00070234  0.00008411  0.00004001  ...
-   ...          ...        ...         ...         ...
+...         ...         ...         ...         ...
 ```
 * step1\_chr22.log - contains logging information (e.g. number of SNPs,
 number of SNPs filtered, etc.)
@@ -144,7 +144,7 @@ heritability estimates and their standard error.
 python hess.py \
     --prefix step1 \
     --k 50 \
-    --output-file-step2 step2.txt
+    --out step2.txt
 ```
 
 In the command above, `--prefix` specifies prefix of the files generated
@@ -163,7 +163,7 @@ chr     start   end     num_snp k       local_h2g       var
 1       1892607 3582735 814     40      0.0004164805    0.000000039661
 1       3582736 4380810 558     40      0.0001844619    0.000000027595
 1       4380811 5913892 1879    40      0.0000738749    0.000000032164
-...       ...     ...    ...    ...       ...             ...
+...     ...     ...     ...     ...     ...             ...
 ```
 * step2.txt.log - contains logging information (e.g. estimated genomic
 control factor, total SNP heritability, etc.)
