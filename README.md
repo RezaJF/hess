@@ -1,9 +1,5 @@
 ## HESS (Heritability Estimation from Summary Statistics v0.2-beta)
 
----
-
-#### Overview
-
 HESS estimates the amount of variance in trait explained by typed SNPs at
 each single locus on the genome (local SNP-heritability) from GWAS summary
 statistics, while accounting for linkage disequilibrium (LD).
