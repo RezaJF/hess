@@ -10,7 +10,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 HESS requires [NumPy](http://www.numpy.org/) and 
 [Python 2.7](https://www.python.org/download/releases/2.7/).
-Although not required, we recommend using [NumPy with Intel MKL](
+We recommend using [NumPy with Intel MKL](
 https://software.intel.com/en-us/articles/numpyscipy-with-intel-mkl)
 for maximum speed.
 
