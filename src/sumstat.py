@@ -82,31 +82,17 @@ def filter_snps(refpanel_leg, snp_beta, snp_beta_info):
             refpanel_refalt = snpid_refpanel_refalt[snpid]
             
             # snps with matching alleles, do nothing
-            if((refpanel_refalt == "AC" and refalt in equiv["AC"]) or
-               (refpanel_refalt == "AG" and refalt in equiv["AG"]) or
-               (refpanel_refalt == "CA" and refalt in equiv["CA"]) or
-               (refpanel_refalt == "CT" and refalt in equiv["CT"]) or
-               (refpanel_refalt == "TC" and refalt in equiv["TC"]) or
-               (refpanel_refalt == "TG" and refalt in equiv["TG"]) or
-               (refpanel_refalt == "GA" and refalt in equiv["GA"]) or
-               (refpanel_refalt == "GT" and refalt in equiv["GT"])):
+            if((refpanel_refalt in equiv) and
+               (refalt in equiv[refpanel_refalt])):
                 pass
             # snps with inverse alleles, multiply z-score with -1
-            elif((refpanel_refalt == "AC" and refalt in reverse["AC"]) or
-                 (refpanel_refalt == "AG" and refalt in reverse["AG"]) or
-                 (refpanel_refalt == "CA" and refalt in reverse["CA"]) or
-                 (refpanel_refalt == "CT" and refalt in reverse["CT"]) or
-                 (refpanel_refalt == "TC" and refalt in reverse["TC"]) or
-                 (refpanel_refalt == "TG" and refalt in reverse["TG"]) or
-                 (refpanel_refalt == "GA" and refalt in reverse["GA"]) or
-                 (refpanel_refalt == "GT" and refalt in reverse["GT"])):
+            elif((refpanel_refalt in reverse) and
+                 (refalt in reverse[refpanel_refalt])):
                 snp_beta[snpid] = -1.0*snp_beta[snpid]
-            # strand ambiguous snps
-            elif(refalt in ambiguous):
-                filter_set.add(i)
-            # snps with alleles not matching reference panel
+            # strnad ambiguous snps and snps with no-matching alleles
             else:
-                filter_set.add(i)
+                filter_set.add(i) 
+        
         # snp not found in reference panel
         else:
             filter_set.add(i)
