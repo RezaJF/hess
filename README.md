@@ -26,8 +26,8 @@ HESS requires as input
 ###### Summary statistics
 
 To improve computational efficiency and parallelizability, HESS requires that
-users split summary statistics into chromosomes and that SNPs are *sorted by
-position*. For each SNP, HESS requires 6 information (in the listed order):
+users split summary statistics into chromosomes and that SNPs are **sorted by
+position**. For each SNP, HESS requires 6 information (in the listed order):
 (1) rs ID (2) position (3) reference allele (4) alternative allele
 (5) Z-score (6) sample size. HESS internally filters out strand-ambiguous
 SNPs and flips signs of Z-scores based on alleles in the reference panel.
@@ -179,7 +179,7 @@ For step 2, HESS has 4 additional flags:
 * `--lambda_gc` allows users to specify their own genomic control factor to
 re-inflate the summary statistics, if not specified, HESS will estimates
 the genomic control factor from data
-* `--tot-h2g <h2g>,<s.e.>` allows users to specify total SNP heritability
+* `--tot-h2g <h2g> <s.e.>` allows users to specify total SNP heritability
 of the trait
 * `--sense-threshold-joint` default at 2.0, allows users to control standard
 error of the estimates when total SNP heritability is not known, the smaller
@@ -187,6 +187,8 @@ the threshold, the smaller the standard error (at the cost of downward bias)
 * `--sense-threshold-indep` default at 0.5, allows users to control standard
 error of the estimates when total SNP heritability is available, the smaller
 the threshold, the smaller the standard error (at the cost of downward bias)
+* `--eig-threshold` default at 1.0, allows users to filter eigenvectors
+based on magnitude of eigenvalues
 
 ---
 
@@ -199,5 +201,5 @@ related to HESS.
 
 #### Reference
 
-Manuscript describing HESS can be found at the
-[preprint](http://biorxiv.org/content/early/2016/01/04/035907).
+Manuscript describing HESS can be found
+[here](http://www.cell.com/ajhg/abstract/S0002-9297(16)30148-3).
