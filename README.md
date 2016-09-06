@@ -76,7 +76,7 @@ do
         --h2g zscore.chr"$i" \
         --reference-panel refpanel_genotype_chr"$i".gz \
         --legend-file refpanel_legend_chr"$i".gz \
-        --partition-file partition_chr"$i".bed
+        --partition-file partition_chr"$i".bed \
         --out step1
 done
 ```
@@ -91,8 +91,8 @@ For input file format, please refer to
 [Input file format](#input_file_format).
 
 After executing the command above, 4 files will be created for each
-chromosome, taking up ~10MB of space for the entire genome. Here's an example
-obtained for chromosome 22.
+chromosome (i.e. 88 files in total), taking up ~10MB of space for the entire
+genome. Here's an example obtained for chromosome 22.
 
 * step1\_chr22.info.gz - contains the information of each locus (start and
    end positions,  number of SNPs, rank of LD matrices, sample size)
@@ -132,8 +132,8 @@ Command finished at: ...
 ```
 
 ###### Step 2 - compute local SNP heritability
-In this step, HESS uses results from step 1 (step1\_chr22.info.gz,
-step1\_chr22.eig.gz, step1\_chr22.prjsq.gz) to compute local SNP
+In this step, HESS uses results from step 1 (step1\_chr{1..22}.info.gz,
+step1\_chr{1..22}.eig.gz, step1\_chr{1..22}.prjsq.gz) to compute local SNP
 heritability estimates and their standard error.
 
 ```{r, engine='sh', count_lines}
