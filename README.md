@@ -151,9 +151,10 @@ maximum number of eigenvectors to use in estimating local SNP heritability;
 
 After executing the command above, 2 files will be created.
 
-* step2.txt - contains local SNP heritability estimates (including
-chromosome number, locus start position, locus end position, number of SNPs
-in locus, number of eigenvectors used, local SNP heritability, variance)
+* step2.txt - contains local SNP heritability estimates for loci across all
+chromosomes (including chromosome number, locus start position, locus end
+position, number of SNPs in locus, number of eigenvectors used, local SNP
+heritability, variance)
 ```
 chr     start       end         num_snp k       local_h2g       var
 1       10583       1892606     158     24      0.0001786340    0.000000011374
