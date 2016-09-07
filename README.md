@@ -155,12 +155,16 @@ After executing the command above, 2 files will be created.
 chromosome number, locus start position, locus end position, number of SNPs
 in locus, number of eigenvectors used, local SNP heritability, variance)
 ```
-chr     start   end     num_snp k       local_h2g       var
-1       10583   1892606 158     24      0.0001786340    0.000000011374
-1       1892607 3582735 814     40      0.0004164805    0.000000039661
-1       3582736 4380810 558     40      0.0001844619    0.000000027595
-1       4380811 5913892 1879    40      0.0000738749    0.000000032164
-...     ...     ...     ...     ...     ...             ...
+chr     start       end         num_snp k       local_h2g       var
+1       10583       1892606     158     24      0.0001786340    0.000000011374
+1       1892607     3582735     814     40      0.0004164805    0.000000039661
+1       3582736     4380810     558     40      0.0001844619    0.000000027595
+1       4380811     5913892     1879    40      0.0000738749    0.000000032164
+...     ...         ...         ...     ...     ...             ...
+22      46470495    47596317    899     50      0.0004263759    0.000000005798
+22      47596318    48903702    1580    50      0.0000899976    0.000000003539
+22      48903703    49824533    1344    50      0.0000695594    0.000000003439
+22      49824534    51243297    740     50      0.0001590363    0.000000004160
 ```
 * step2.txt.log - contains logging information (e.g. estimated genomic
 control factor, total SNP heritability, etc.)
