@@ -133,9 +133,12 @@ Command finished at: ...
 
 ###### Step 2 - compute local SNP heritability
 **Step 2 should be run after step 1 finishes for all chromosomes.**
-In this step, HESS uses results from step 1 (step1\_chr{1..22}.info.gz,
-step1\_chr{1..22}.eig.gz, step1\_chr{1..22}.prjsq.gz) to compute local SNP
-heritability estimates and their standard error.
+In this step, HESS uses results from step 1 across all chromosomes
+(step1\_chr{1..22}.info.gz, step1\_chr{1..22}.eig.gz,
+step1\_chr{1..22}.prjsq.gz) to compute local SNP heritability estimates
+and their standard error. The following command automatically looks for
+results from step 1 across all chromosomes with the prefix "step1" to
+obtain local SNP-heritability estimates.
 
 ```{r, engine='sh', count_lines}
 python hess.py \
