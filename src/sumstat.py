@@ -112,4 +112,15 @@ def filter_snps(refpanel_leg, snp_beta, snp_beta_info):
             snp_beta_filt[snpid] = snp_beta[snpid]
             snp_beta_info_filt.append(snp_beta_info[i])
 
+    # check if summary stat is sorted
+    issorted = True
+    for i in xrange(len(snp_beta_info_filt)-1):
+        if(snp_beta_info_filt[i+1][1] < snp_beta_info_filt[i][1]):
+            issorted = False
+            break
+    
+    # sort based on snp position only if not sorted
+    if(issorted == False):
+        snp_beta_info_filt = sorted(snp_beta_info_filt, key=lambda x: x[1])
+
     return snp_beta_filt,snp_beta_info_filt
