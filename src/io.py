@@ -51,7 +51,7 @@ def load_beta(zscore_file_name):
             continue
         cols = line.strip().split()
         pos = int(cols[1])
-        ref_alt = cols[2]+cols[3]
+        ref_alt = cols[2].upper()+cols[3].upper()
         zscore = float(cols[4])
         n = float(cols[5])
         beta = zscore / math.sqrt(n)
