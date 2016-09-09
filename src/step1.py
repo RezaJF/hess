@@ -115,6 +115,12 @@ def output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg, snp_beta,
         gens,line_idx = io.load_reference_panel(ref_file, locus_snp,
             load_line_idx, refpanel_leg, line_idx)
 
+        # check if reference genotypes are loaded correctly
+        if(len(locus_beta1) != gens.shape[0]):
+            sys.stderr.write("An error occurred while loading"
+                             " reference panel. Aborting.\n")
+            sys.exit(1)
+
         # check for empty locus
         if(len(locus_beta) == 0):
             out_file_info.write('%d\t%d\t%d\t%d\t%.1f\n'
