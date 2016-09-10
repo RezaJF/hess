@@ -8,7 +8,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 #### Releases
 
-[version 0.3-beta](https://github.com/huwenboshi/hess/releases)
+[version 0.3-beta](https://github.com/huwenboshi/hess/releases/tag/v0.3-beta)
 
 ---
 
