@@ -53,11 +53,9 @@ Although HESS provides functionality to filter and sort SNPs, we recommend
 that the user go through the following checklist before applying HESS.
 
 1. Make sure that the coordinate of SNP positions in the summary
-statistics file matches that of the reference panel (NCBI b37).
-
+statistics file matches the reference panel (NCBI b37).
 2. Make sure that strand-ambiguous SNPs (SNPs with alleles A/T or C/G)
 are removed.
-
 3. Make sure that summary statistics are split into chromosomes and
 that SNPs are sorted by their position.
 
