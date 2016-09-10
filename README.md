@@ -32,9 +32,9 @@ HESS requires as input
 ###### Summary statistics
 
 **To improve computational efficiency and parallelizability, HESS requires
-that users split summary statistics into chromosomes and that SNPs are sorted
-by position**. For each SNP, HESS requires 6 information (in the listed
-order): (1) rs ID (2) position (3) reference allele (4) alternative allele
+that users split summary statistics into chromosomes**. For each SNP, HESS
+requires 6 information (in the listed order): (1) rs ID (2) position
+(3) reference allele (4) alternative allele
 (5) Z-score (6) sample size. HESS internally filters out strand-ambiguous
 SNPs and flips signs of Z-scores based on alleles in the reference panel.
 However, user awareness of these details are highly recommended. The
@@ -46,6 +46,20 @@ rs1000 29321 G A -1.6434 89834
 rs1001 29478 T C -0.0152 91021
 rs1002 30500 G A 0.7238 95831
 ```
+
+###### Input checklist
+
+Although HESS provides functionality to filter and sort SNPs, we recommend
+that the user go through the following checklist before applying HESS.
+
+1. Make sure that the coordinate of SNP positions in the summary
+statistics file matches that of the reference panel (NCBI b37).
+
+2. Make sure that strand-ambiguous SNPs (SNPs with alleles A/T or C/G)
+are removed.
+
+3. Make sure that summary statistics are split into chromosomes and
+that SNPs are sorted by their position.
 
 ###### Reference panel
 
