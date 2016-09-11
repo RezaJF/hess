@@ -14,7 +14,7 @@ statistics, while accounting for linkage disequilibrium (LD).
 
 #### Software requirement
 
-HESS requires [NumPy](http://www.numpy.org/) and 
+HESS requires [NumPy (v1.9.2+)](http://www.numpy.org/) and 
 [Python 2.7](https://www.python.org/download/releases/2.7/).
 We recommend using [NumPy with Intel MKL](
 https://software.intel.com/en-us/articles/numpyscipy-with-intel-mkl)
