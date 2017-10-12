@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "HESS\n\n\nHESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data.\n\n\nSoftware requirement\n\n\nFor running HESS\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nPySnpTools 0.3+\n\n\n\n\nFor running analysis and visualization tools\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nMatplotlib 1.4+\n\n\nSciPy 0.16+\n\n\n\n\n\n( \nNote\n: It is important to use the latest version of NumPy, which is\nmore numerically stable when performing eigendecomposition of the LD\nmatrix. Python 3.0+ may not work well ith HESS, which is written and tested\nin Python 2.7.3. )\n\n\n\n\nReferences\n\n\n\n\nLocal SNP-heritability\n: \nShi, Huwenbo, Gleb Kichaev, and Bogdan Pasaniuc. \"Contrasting the genetic architecture of 30 complex traits from summary association data.\" The American Journal of Human Genetics 99, no. 1 (2016): 139-153.\n\n\nLocal genetic covariance (correlation)\n: Shi, Huwenbo, Nicholas Mancuso, Sarah Spendlove, and Bogdan Pasaniuc. \"Local genetic correlation gives insights into the shared genetic architecture of complex traits.\" The American Journal of Human Genetics (2017, in press)\n\n\n\n\nContact\n\n\n\n\nHuwenbo Shi\n: shihuwenbo_AT_ucla.edu\n\n\nBogdan Pasaniuc\n: bpasaniuc_AT_mednet.ucla.edu", 
+            "text": "HESS\n\n\nHESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data.\n\n\nSoftware requirement\n\n\nFor running HESS\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nPySnpTools 0.3+\n\n\nSciPy 0.16+\n\n\n\n\nFor running analysis and visualization tools\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nMatplotlib 1.4+\n\n\nSciPy 0.16+\n\n\n\n\n\n( \nNote\n: It is important to use the latest version of NumPy, which is\nmore numerically stable when performing eigendecomposition of the LD\nmatrix. Python 3.0+ may not work well ith HESS, which is written and tested\nin Python 2.7.3. )\n\n\n\n\nReferences\n\n\n\n\nLocal SNP-heritability\n: \nShi, Huwenbo, Gleb Kichaev, and Bogdan Pasaniuc. \"Contrasting the genetic architecture of 30 complex traits from summary association data.\" The American Journal of Human Genetics 99, no. 1 (2016): 139-153.\n\n\nLocal genetic covariance (correlation)\n: Shi, Huwenbo, Nicholas Mancuso, Sarah Spendlove, and Bogdan Pasaniuc. \"Local genetic correlation gives insights into the shared genetic architecture of complex traits.\" The American Journal of Human Genetics (2017, in press)\n\n\n\n\nContact\n\n\n\n\nHuwenbo Shi\n: shihuwenbo_AT_ucla.edu\n\n\nBogdan Pasaniuc\n: bpasaniuc_AT_mednet.ucla.edu", 
             "title": "Home"
         }, 
         {
@@ -17,7 +17,7 @@
         }, 
         {
             "location": "/#for-running-hess", 
-            "text": "Python 2.7  NumPy 1.9+  Pandas 0.18+  PySnpTools 0.3+", 
+            "text": "Python 2.7  NumPy 1.9+  Pandas 0.18+  PySnpTools 0.3+  SciPy 0.16+", 
             "title": "For running HESS"
         }, 
         {
