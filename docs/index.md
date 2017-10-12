@@ -12,6 +12,7 @@ for estimating and visualizing local SNP-heritability and genetic covariance
 * [NumPy 1.9+](http://www.numpy.org/)
 * [Pandas 0.18+](http://pandas.pydata.org/)
 * [PySnpTools 0.3+](https://github.com/MicrosoftGenomics/PySnpTools)
+* [SciPy 0.16+](https://www.scipy.org/)
 
 ### For running analysis and visualization tools
 
