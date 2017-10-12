@@ -1,194 +1,217 @@
 #!/usr/bin/python
-# (c) 2016-2021 Huwenbo Shi
+# (c) 2017-2022 Huwenbo Shi
 
-import numpy as np, numpy.linalg
+import numpy as np
+import pandas as pd
 import argparse, math, sys, logging, time
-from src import io, step1, step2, sumstat
+from pysnptools.snpreader import Bed
+from src.estimation import *
+
+title_str = """\
+@----------------------------------------------------------@
+       |         HESS       |      v0.5      |    9/October/2017  |
+       |----------------------------------------------------------|
+       |  (C) 2017 Huwenbo Shi, GNU General Public License, v3    |
+       |----------------------------------------------------------|
+       |  For documentation, citation & bug-report instructions:  |
+       |   http://bogdan.bioinformatics.ucla.edu/software/hess/   |
+       @----------------------------------------------------------@\
+"""
 
 # main function
 def main():
 
-    # get command line
+    # get command line argument and initialize log
     args = get_command_line()
+    init_log(args)
 
-    # get step 1 arguments
-    zsc_file = args.zscore_file
-    leg_file = args.legend_file
-    ref_file = args.reference_panel
-    part_file = args.partition_file
-    chrom = args.chrom
+    # get analysis code
+    analysis, argmap = check_command_line(args)
 
-    # get step 2 arguments
-    prefix = args.prefix
-    num_eig = args.k
-    gc = args.lambda_gc
-    if(args.tot_h2g is not None):
-        tot_h2g = args.tot_h2g[0]
-        tot_h2g_se = args.tot_h2g[1]
-    sense_thres_joint = args.sense_threshold_joint
-    sense_thres_indep = args.sense_threshold_indep
-    eig_thres = args.eig_threshold   
-
-    # get output file
-    out_file = args.out_file
+    # run the corresponding analysis
+    if analysis == 'local_hsqg_step1':
+        local_hsqg_step1(argmap['bfile'], argmap['local-hsqg'],
+            argmap['partition'], argmap['chrom'], argmap['min-maf'],
+            argmap['out'])
     
-    ##########     run step 1     ##########
-    if(zsc_file        is not None and 
-       leg_file        is not None and
-       out_file        is not None and
-       ref_file        is not None and
-       part_file       is not None and
-       chrom           is not None and
-       prefix          is     None and
-       args.tot_h2g    is     None):
-
-        # starting the log
-        logging.basicConfig(filename=out_file+'_chr'+chrom+'.log',
-            level=logging.INFO, format='%(message)s', filemode="w")
-        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
-        logging.info('Command started at: %s' % cur_time)
-        logging.info('Command issued: %s' % ' '.join(sys.argv))
-
-        # load snp in legend
-        refpanel_snp_idx, refpanel_leg = io.load_legend(leg_file)
-        logging.info('Number of SNPs in reference panel: '
-                     '%d' % len(refpanel_leg))
-        
-        # load zscore file
-        snp_beta,snp_beta_info = io.load_beta(zsc_file)
-        logging.info('Number of SNPs in Z-score file: '
-                     '%d' % len(snp_beta))
-       
-        # filter out ambiguous snps and fix signs
-        snp_beta,snp_beta_info = sumstat.filter_snps(refpanel_leg,
-            snp_beta, snp_beta_info)
-        logging.info('Number of SNPs in Z-score file after filtering: '
-                     '%d' % len(snp_beta))
-        
-        # load partition
-        part = io.load_partition(part_file)
-        logging.info('Number of loci in partition file: '
-                     '%d' % len(part))
-        
-        # output eigenvalue and projection squared
-        step1.output_eig_prjsq(chrom, refpanel_snp_idx, refpanel_leg,
-            snp_beta, snp_beta_info, part, ref_file, out_file)
-        
-        # ending the log
-        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
-        logging.info('Command finished at: %s' % cur_time)
-
-    ##########     run step 2     ##########
-    elif(zsc_file        is     None and 
-         leg_file        is     None and
-         ref_file        is     None and
-         part_file       is     None and
-         chrom           is     None and
-         prefix          is not None and
-         out_file        is not None):
-        
-        # starting the log
-        logging.basicConfig(filename=out_file+'.log',
-            level=logging.INFO, format='%(message)s', filemode="w")
-        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
-        logging.info('Command started at: %s' % cur_time)
-        logging.info('Command issued: %s' % ' '.join(sys.argv))
-        
-        # load step1
-        locus_info,all_eig,all_prj = io.load_step1(prefix)
-        logging.info('Number of loci from step 1: %d' % len(locus_info))
-
-        # estimate h2g jointly when total h2g is not provided
-        if(args.tot_h2g is None):
-            
-            # estimate local heritability
-            all_h2g,raw_est,gc_est,num_tot_snp = step2.get_local_h2g_joint(
-                locus_info, all_eig, all_prj, num_eig, eig_thres,
-                sense_thres_joint, gc)
-            logging.info('Total number of SNPs: %d' % num_tot_snp)
-            logging.info('Using lambda gc: %.2f' % gc_est)
-
-            # compute the variance of estimate
-            all_var = step2.get_var_est_joint(locus_info, all_h2g)
-            logging.info('Estimated total h2g: %.3f (%.4f)' % (
-                np.sum(all_h2g), math.sqrt(np.sum(all_var))))
-
-        # estimate h2g independently when total h2g is provided
-        else:
-
-            # estimate local heritability
-            all_h2g,raw_est,gc_est,num_tot_snp = step2.get_local_h2g_indep(
-                locus_info, all_eig, all_prj, num_eig, eig_thres,
-                sense_thres_indep, gc, tot_h2g)
-            logging.info('Total number of SNPs: %d' % num_tot_snp)
-            logging.info('Using lambda gc: %.2f' % gc_est)
-            
-            # compute the variance of estimate
-            all_var = step2.get_var_est_indep(locus_info, all_h2g, tot_h2g_se)
-            logging.info('Estimated total h2g: %.3f (%.4f)' % (
-                np.sum(all_h2g), math.sqrt(np.sum(all_var))))
-        
-        # write output
-        step2.output_local_h2g(out_file, locus_info, raw_est,
-                all_h2g, all_var)
-
-        # ending the log
-        cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
-        logging.info('Command finished at: %s' % cur_time)
+    elif analysis == 'local_hsqg_step2':
+        local_hsqg_step2(argmap['prefix'], argmap['max-num-eig'],
+            argmap['min-eigval'], argmap['reinflate-lambda-gc'],
+            argmap['gwse-thres'], argmap['tot-hsqg'], argmap['out'])
     
-    ##########     unrecognized     ##########
+    elif analysis == 'local_rhog_step1':
+        local_rhog_step1(argmap['bfile'], argmap['local-rhog'],
+            argmap['partition'], argmap['chrom'], argmap['min-maf'],
+            argmap['out'])
+    
+    elif analysis == 'local_rhog_step2':
+        local_rhog_step2(argmap['prefix'], argmap['local-hsqg-est'],
+            argmap['max-num-eig'], argmap['min-eigval'],
+            argmap['reinflate-lambda-gc'], argmap['gwse-thres'],
+            argmap['pheno-cor'], argmap['num-shared'], argmap['out'])
+
     else:
-        print 'unrecognized option'
-        sys.exit(1)
+        logging.error('Invalid command line option.')
 
-# get command line
+    # end the log
+    end_log()
+
+# check command line
+def check_command_line(args):
+
+    # parse command line
+    argmap = dict()
+    for arg in vars(args):
+        argmap[arg] = getattr(args, arg)
+
+    # step 1 for local SNP-heritability
+    if(argmap['chrom'] != None and argmap['partition'] != None and
+       argmap['local-hsqg'] != None and argmap['bfile'] != None):
+        return ('local_hsqg_step1', argmap)
+
+    # step 2 for local SNP-heritability
+    if(argmap['prefix'] != None and argmap['out'] != None and
+       argmap['pheno-cor'] == None and argmap['num-shared'] == None and
+       argmap['local-hsqg-est'] == None):
+        return ('local_hsqg_step2', argmap)
+
+    # step 1 for local genetic covariance
+    if(argmap['chrom'] != None and argmap['partition'] != None and
+       argmap['local-rhog'] != None and argmap['bfile'] != None):
+        return ('local_rhog_step1', argmap)
+
+    # step 2 for local genetic covariance
+    if(argmap['prefix'] != None and argmap['out'] != None and
+       argmap['pheno-cor'] != None and argmap['num-shared'] != None and
+       argmap['local-hsqg-est'] != None):
+        return ('local_rhog_step2', argmap)
+
+    # command line option not recognized
+    return ('invalid', argmap)
+
+# initialize log
+def init_log(args):
+
+    # get log file name
+    log_file_name = args.out
+    if args.chrom != None:
+        log_file_name = log_file_name + '_chr' + args.chrom
+    log_file_name += '.log'
+
+    # create the log file
+    log_format = '[%(levelname)s] %(message)s'
+    logging.basicConfig(filename=log_file_name, filemode="w",
+        level=logging.DEBUG, format=log_format)
+
+    # add stderr as a stream handler
+    stderr_handler = logging.StreamHandler(sys.stderr)
+    formatter = logging.Formatter(log_format)
+    stderr_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(stderr_handler)
+
+    # log time and command issued
+    logging.info(title_str)
+    specified = set([val for val in sys.argv if val[0] == '-'])
+    cmd_str = sys.argv[0] + ' \\\n'
+    for arg in vars(args):
+        if ('--' + arg) in specified:
+            param = getattr(args, arg)
+            if type(param) == list:
+                param = ' '.join([str(p) for p in param])
+            elif type(param) == bool:
+                param = ''
+            cmd_str += '        --{} {} \\\n'.format(arg, param)
+    cmd_str = cmd_str.strip()[0:len(cmd_str)-3]
+    cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+    logging.info('Command started at: %s' % cur_time)
+    logging.info('Command issued:\n    {}'.format(cmd_str))
+
+# end the log
+def end_log():
+    cur_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime())
+    logging.info('Command finished at: %s' % cur_time)
+
+# get command line input
 def get_command_line():
-    parser = argparse.ArgumentParser(description='Compute eigenvalues \
-                    of LD matrices, and squared projections of effect \
-                    size vector onto corresponding eigenvectors')
+    
+    # create the help document
+    parser = argparse.ArgumentParser(description='Estimate local '
+        'SNP-heritability and genetic covariance from GWAS summary data')
 
-    # step 1 arguments
-    parser.add_argument('--h2g', dest='zscore_file', type=str,
-                   help='Z-score file', required=False)
-    parser.add_argument('--chrom', dest='chrom', type=str,
-                   help='Chromosome number', required=False)
-    parser.add_argument('--reference-panel', dest='reference_panel', type=str,
-                   default=None, help='Reference panel file', required=False)
-    parser.add_argument('--legend-file', dest='legend_file', type=str,
-                   help='Legend file', required=False)
-    parser.add_argument('--partition-file', dest='partition_file', type=str,
-                   help='Partition file', required=False)
+    ########## step 1 ##########
+
+    parser.add_argument('--bfile', dest='bfile', type=str, required=False,
+        default=None, help='Reference panel file in PLINK file format')
+
+    parser.add_argument('--chrom', dest='chrom', type=str, required=False,
+        help='Specifies the chromosome number')
     
+    parser.add_argument('--partition', dest='partition', type=str,
+        help='A bed format file specifying how the genome is partitioned',
+        required=False)
     
-    # step 2 arguments
+    parser.add_argument('--local-hsqg', dest='local-hsqg', type=str,
+        help='Z-score file for local SNP-heritability estimation',
+        required=False)
+
+    parser.add_argument('--local-rhog', dest='local-rhog', type=str, nargs=2,
+        help='Z-score files for local genetic covariance estimation',
+        required=False)
+
+    ########## step 2 ##########
+
+    # local SNP-heritability
+
+    parser.add_argument('--tot-hsqg', dest='tot-hsqg', nargs=2, type=float,
+        help='Total trait SNP heritability and standard error', required=False)
+    
+    # local genetic covariance
+
+    parser.add_argument('--num-shared', dest='num-shared', type=float,
+        help='Number of shared samples', required=False)
+    
+    parser.add_argument('--pheno-cor', dest='pheno-cor', type=float,
+        help='Phenotype correlation', required=False)
+    
+    parser.add_argument('--local-hsqg-est', dest='local-hsqg-est', type=str,
+        nargs=2, default=None, help='Local SNP-heritability estimates')
+    
+    ########## other arguments ##########
+    
+    # prefixe used for step 1
     parser.add_argument('--prefix', dest='prefix', type=str,
-                   help='Prefix used for step 1', required=False)
-    parser.add_argument('--k', dest='k', type=int, default=50,
-                   help='Maximum number of eigenvectors to use (default 50)')
-    parser.add_argument('--lambda_gc', dest='lambda_gc', type=float,
-                   default=None, help='Genomic control factor (will be \
-                   estimated if not provided)')
-    parser.add_argument('--tot-h2g', dest='tot_h2g', nargs=2, type=float,
-                   help='Total trait SNP heritability', required=False)
-    parser.add_argument('--sense-threshold-joint',
-                   dest='sense_threshold_joint', type=float,
-                   default=2.0, help='Sensitivity threshold on \
-                   total h2g estimates, used when tot_h2g is not provided \
-                   (default 2.0)')
-    parser.add_argument('--sense-threshold-indep',
-                   dest='sense_threshold_indep', type=float,
-                   default=0.5, help='Sensitivity threshold on \
-                   total h2g estimates, used when tot_h2g is provided \
-                   (default 0.5)')
-    parser.add_argument('--eig-threshold', dest='eig_threshold', type=float,
-                   default=1.0, help='Eigenvalue threshold (default 1.0)') 
+        help='Prefix used for step 1', required=False)
+
+    # maximum number of eigenvectors use in the truncated-SVD regularization
+    # of the LD matrix used
+    parser.add_argument('--max-num-eig', dest='max-num-eig', type=int, 
+        default=50, help='Maximum number of eigenvectors to use in the'
+        'truncated-SVD regularization of the LD matrix (default 50)')
+
+    # eigenvalue threshold
+    parser.add_argument('--min-eigval', dest='min-eigval', type=float,
+        default=1.0, help='Eigenvalue threshold (default 1.0)')
+
+    # maf threshold
+    parser.add_argument('--min-maf', dest='min-maf', type=float,
+        default=0.05, help='Minimum minor allele frequency')
+
+    # refinlate the estimates by the lambda gc
+    parser.add_argument('--reinflate-lambda-gc', nargs='*',
+        dest='reinflate-lambda-gc', type=float, required=False, default=None,
+        help='Reinflate the summary stats with by the genomic control factor')
+
+    # a threshold on the sensitivity of the genome-wide estimates
+    parser.add_argument('--gwse-thres', dest='gwse-thres', type=float,
+        default=None, help='Sensitivity threshold on total SNP-heritability'
+        ' estimates (default is 2.0 if --tot-hsqg is not specified and 0.5'
+        ' otherwise')
 
     # specify output file
-    parser.add_argument('--out', dest='out_file', type=str,
-                   help='Output file name', required=False)
-    args = parser.parse_args()
+    parser.add_argument('--out', dest='out', type=str,
+        help='Output file name', required=True)
     
-    return args
+    return parser.parse_args()
 
 if(__name__ == '__main__'):
     main()

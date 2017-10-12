@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Huwenbo Shi">
+        <link rel="canonical" href="https://huwenboshi.github.io/hess/local_rhog/">
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Local genetic covariance (correlation) - HESS</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-XXXXXXXX-X', 'auto');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">HESS</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                    <li >
+                        <a href="../input_format/">Input Format</a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Estimation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../local_hsqg/">Local SNP-heritability</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Local genetic covariance (correlation)</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analysis <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../viz/">Visualizing local estimates</a>
+</li>
+                            
+<li >
+    <a href="../contrast_polygenicity/">Contrast polygenicity</a>
+</li>
+                            
+<li >
+    <a href="../infer_causality/">Infer putative causality</a>
+</li>
+                        </ul>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../local_hsqg/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../viz/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/huwenboshi/hess">
+                                <i class="fa fa-github"></i>GitHub
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#estimating-local-genetic-covariance-and-correlation-92rho92-hess">Estimating local genetic covariance and correlation (\(\rho\)-HESS)</a></li>
+            <li><a href="#step-1-compute-eigenvalues-squared-projections-and-product-of-projections">Step 1 - compute eigenvalues, squared projections, and product of projections</a></li>
+            <li><a href="#step-2-estimate-local-snp-heritability-of-each-trait">Step 2 - estimate local SNP-heritability of each trait</a></li>
+            <li><a href="#step-3-estimate-local-genetic-covariance-and-standard-error">Step 3 - estimate local genetic covariance and standard error</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="estimating-local-genetic-covariance-and-correlation-92rho92-hess">Estimating local genetic covariance and correlation (\(\rho\)-HESS)<a class="headerlink" href="#estimating-local-genetic-covariance-and-correlation-92rho92-hess" title="Permanent link">&para;</a></h1>
+<p>This page describes the steps to estimate local genetic covariance and
+correlation from GWAS summary association data. In the first step,
+HESS computes the eigenvalues of LD matrices, the squared projections of
+GWAS effect size vector onto the eigenvectors of LD matrices for each trait,
+and the product of projections of GWAS effect size vectors onto the
+eigenvectors. In the second step, HESS uses the output from step 1 to
+obtain estimates of local SNP-heritability of each trait. In the third step,
+HESS, uses output from step 2 to obtain local genetic covariance estimates
+and their standard errors.</p>
+<h2 id="step-1-compute-eigenvalues-squared-projections-and-product-of-projections">Step 1 - compute eigenvalues, squared projections, and product of projections<a class="headerlink" href="#step-1-compute-eigenvalues-squared-projections-and-product-of-projections" title="Permanent link">&para;</a></h2>
+<h3 id="running-the-tool">Running the tool<a class="headerlink" href="#running-the-tool" title="Permanent link">&para;</a></h3>
+<p>In this step, HESS computes eigenvalues, squared and product of projections of
+GWAS effect size vector of each trait onto the eigenvectors of LD matrices.
+The following code provides an example of how to perform this step.</p>
+<div class="codehilite"><pre>for chrom in $(seq 22)
+do
+    python hess.py \
+        --local-rhog &lt;summary stats for trait 1&gt; &lt;summary stats for trait 2&gt; \
+        --chrom $chrom \
+        --bfile &lt;reference panel in PLINK format for the specific chromosome&gt; \
+        --partition &lt;genome partition file for the specific chromosome&gt; \
+        --out step1
+done
+</pre></div>
+
+
+<p>In the command above, <code>--local-rhog</code> tells HESS to estimate local
+genetic covariance, and is used to specify GWAS summary statistics data for
+two traits; <code>--chrom</code> is used to specify the chromosome number; <code>--bfile</code> is
+used to specify the reference panel for the corresponding chromsome;
+<code>--partition</code> is used to specify the genome partition file; <code>--out</code> is used
+to specify the prefix of the output file. For input file format, please refer
+to <a href="https://huwenboshi.github.io/hess-0.5/input_format/">Input Format</a>.</p>
+<div style="background-color:rgba(230, 230, 250, 1.0);">
+( <b>Note</b>: The above for loop can be parallelized by chromosome in case a
+computer cluster is available. In addition, users can specify the minimum
+minor allele frequency (MAF) of the SNPs used for estimation through the
+"--min-maf" flag. The default MAF threshold is 0.05. )
+</div>
+
+<h3 id="interpreting-the-output">Interpreting the output<a class="headerlink" href="#interpreting-the-output" title="Permanent link">&para;</a></h3>
+<p>After executing the command above, 9 files will be created for each
+chromosome (i.e. 198 files for all 22 chromosomes in total). The following is
+an example output obtained for chromosome 22. The format of the output files
+are identical to the output of
+<a href="https://huwenboshi.github.io/hess-0.5/local_hsqg/#interpreting-the-output">local SNP-heritability analysis</a>.</p>
+<p>The following two files will be used in the 3rd step to estimate local
+genetic covariance.</p>
+<ul>
+<li><strong>step1_chr22.eig.gz</strong> - contains the eigenvalues of LD matrix at each locus</li>
+<li><strong>step1_chr22.prjprod.gz</strong> - contains the product of projections</li>
+</ul>
+<p>The following three files will be used in the 2nd step to estimate local
+SNP-heritability of trait 1</p>
+<ul>
+<li><strong>step1_trait1_chr22.eig.gz</strong> - contains the eigenvalues of LD matrix at each locus</li>
+<li><strong>step1_trait1_chr22.info.gz</strong> - contains information of each locus</li>
+<li><strong>step1_trait1_chr22.prjsq.gz</strong> - contains the squared projections</li>
+</ul>
+<p>The following three files are the same type of files as the previous three
+files, and will be used in the 2nd step to estimate local SNP-heritability
+of trait 2</p>
+<ul>
+<li><strong>step1_trait2_chr22.eig.gz</strong> - contains the eigenvalues of LD matrix of each locus</li>
+<li><strong>step1_trait2_chr22.info.gz</strong> - contains information of each locus</li>
+<li><strong>step1_trait2_chr22.prjsq.gz</strong> - contains the squared projections</li>
+</ul>
+<p>In addition, a log file <strong>step1_trait2_chr22.log</strong> will be created to document
+the details of each step.</p>
+<h2 id="step-2-estimate-local-snp-heritability-of-each-trait">Step 2 - estimate local SNP-heritability of each trait<a class="headerlink" href="#step-2-estimate-local-snp-heritability-of-each-trait" title="Permanent link">&para;</a></h2>
+<h3 id="running-the-tool_1">Running the tool<a class="headerlink" href="#running-the-tool_1" title="Permanent link">&para;</a></h3>
+<p>In this step, we estimate local SNP-heritability for trait 1 and trait 2 using
+output from step 1. The following script provide an example of how to perform
+this step. Please see <a href="https://huwenboshi.github.io/hess-0.5/local_hsqg/#step-2-estimate-local-snp-heritability-and-standard-error">local SNP-heritability analysis</a>
+for more detail.</p>
+<div class="codehilite"><pre># estimate local SNP-heritability for trait 1
+python hess.py --prefix step1_trait1 --out step2_trait1
+
+# estimate local SNP-heritability for trait 2
+python hess.py --prefix step1_trait2 --out step2_trait2
+</pre></div>
+
+
+<h3 id="interpreting-the-output_1">Interpreting the output<a class="headerlink" href="#interpreting-the-output_1" title="Permanent link">&para;</a></h3>
+<p>The above command will result in 4 files, 2 for each trait, containing local
+SNP-heritability estimates at each locus.</p>
+<ul>
+<li><strong>step2_trait1.txt</strong> - contains local SNP-heritability estimates at each locus for trait 1</li>
+<li><strong>step2_trait2.txt</strong> - contains local SNP-heritability estimates at each locus for trait 2</li>
+</ul>
+<p>In addition, 2 log files will also be created.</p>
+<ul>
+<li><strong>step2_trait1.log</strong> - contains debugging information for trait 1</li>
+<li><strong>step2_trait2.log</strong> - contains debugging information for trait 2</li>
+</ul>
+<p>Please see <a href="https://huwenboshi.github.io/hess-0.5/local_hsqg/#interpreting-the-output_1">local SNP-heritability analysis</a>
+for more detail.</p>
+<h2 id="step-3-estimate-local-genetic-covariance-and-standard-error">Step 3 - estimate local genetic covariance and standard error<a class="headerlink" href="#step-3-estimate-local-genetic-covariance-and-standard-error" title="Permanent link">&para;</a></h2>
+<h3 id="estimate-phenotypic-correlation">Estimate phenotypic correlation<a class="headerlink" href="#estimate-phenotypic-correlation" title="Permanent link">&para;</a></h3>
+<p>\(\rho\)-HESS requires phenotypic correlation between a pair of traits to
+obtain an unbiased estimates of local genetic covariance. If phenotypic data
+of the GWAS is available, we recommend to obtain phenotypic correlation of
+the pair of traits by taking the Pearson correlation between the phenotype
+values of the two traits.</p>
+<p>If individual-level phenotype data are not available, one can obtain an
+estimate through
+<a href="https://github.com/bulik/ldsc/wiki/Heritability-and-Genetic-Correlation">cross-trait LDSC</a>.
+The intercept term corresponding to the genetic covariance estimates provides
+an approximation of phenotypic correlation. More precisely, the estimated 
+phenotypic correlation \(r_{pheno}\) is
+\[
+    r_{pheno} =  \delta \times \sqrt{N_1 N_2} / N_s,
+\]
+where \(\delta\) is the intercept term, \(N_1\) and \(N_2\) sample
+size for the two GWAS, and \(N_s\) number of shared samples between the
+two GWASs.</p>
+<p>We provide a simple script (<code>misc/estimate_phenocor.py</code>) for obtaining 
+phenotypic correlation from cross-trait LDSC log files.</p>
+<div class="codehilite"><pre>python misc/estimate_phenocor.py \
+    --ldsc-log &lt;cross-trait LDSC log file&gt; \
+    --n1 &lt;sample size for GWAS 1&gt; --n2 &lt;sample size for GWAS 2&gt; \
+    --ns &lt;number of shared samples&gt;
+</pre></div>
+
+
+<div style="background-color:rgba(230, 230, 250, 1.0);">
+( <b>Note</b>: If there is no sample overlap between the two GWASs, then
+one does not need to estimate phenotypic correlation. This is because bias
+in local genetic covariance estimate are caused by environmental covariance
+coming from overlapping GWAS samples. And one needs to know the phenotypic
+correlation to infer environmental covariance. When there is no sample
+overlap, there is no need to correct for bias caused by environmental
+covariance. )
+</div>
+
+<div style="background-color:rgba(240, 128, 128, 0.2);">
+( <b>Note</b>: The cross-trait LDSC intercept here should correspond to
+genetic covariance and not SNP-heritability. )
+</div>
+
+<h3 id="running-the-tool_2">Running the tool<a class="headerlink" href="#running-the-tool_2" title="Permanent link">&para;</a></h3>
+<p>The following script combines output from step 1 and step 2 to obtain local
+genetic covariance estimates.</p>
+<div class="codehilite"><pre>python hess.py \
+    --prefix step1 \
+    --local-hsqg-est step2_trait1.txt step2_trait2.txt \
+    --num-shared &lt;number of overlapping samples in the two GWASs&gt; \
+    --pheno-cor &lt;phenotypic correlation between the two traits&gt; \
+    --out step3
+</pre></div>
+
+
+<div style="background-color:rgba(230, 230, 250, 1.0);">
+( <b>Note</b>: When "--num-shared" is set to zero, "--pheno-cor" can be
+set to any value (e.g. 0.0) and the result will not be affected. Also, note
+that no for loop is required here. &rho;-HESS will automatically look
+for output from all chromosomes.)
+</div>
+
+<h4 id="other-available-flags">Other available flags<a class="headerlink" href="#other-available-flags" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>--max-num-eig</code>: Specifies the number of eigenvectors to use in the
+truncated-SVD for inverting the LD matrix, default 50</li>
+<li><code>--min-eigval</code>: Specifies the minimum eigenvalue cut off in
+truncated-SVD, default 1.0</li>
+<li><code>--reinflate-lambda-gc</code>: Genomic control factors that have been applied to
+the summary statistics, default 1.0 for both</li>
+<li><code>--gwse-thres</code>: A threshold to cap the standard error of total
+SNP-heritability estimate</li>
+</ul>
+<h3 id="interpreting-the-output_2">Interpreting the output<a class="headerlink" href="#interpreting-the-output_2" title="Permanent link">&para;</a></h3>
+<p>After step3, 2 files will be created. These include</p>
+<ul>
+<li><strong>step3.txt</strong> - contains the local genetic covariance estimates across
+the entire genome. The columns are chromosome, start and end positions of
+the locus, number of SNPs in the locus, number of eigenvectors used in the
+truncated-SVD, local genetic covariance estimates, and variance estimates.
+We also report the standard error and test statistics.</li>
+</ul>
+<div class="codehilite"><pre>chr  start     end         num_snp k    local_rhog    var          se           z            p
+1    10583     1892607     1286    50   1.3906e-06    2.1507e-09   4.6375e-05   0.029985     0.97608
+1    1892607   3582736     3045    50   -3.2351e-05   4.0829e-09   6.3898e-05   -0.50629     0.61265
+1    3582736   4380811     1622    50   0.00011446    2.9594e-09   5.44e-05     2.104        0.035379
+1    4380811   5913893     3790    50   -1.898e-06    3.3276e-09   5.7685e-05   -0.032903    0.97375
+...  ...       ...         ...     ...  ...           ...          ...          ...          ...
+22   46470495  47596318    2444    50   -1.8303e-05   2.7353e-09   5.23e-05     -0.34997     0.72636
+22   47596318  48903703    2997    50   -4.6613e-06   3.1558e-09   5.6176e-05   -0.082977    0.93387
+22   48903703  49824534    3773    50   -1.261e-06    3.2769e-09   5.7245e-05   -0.022028    0.98243
+22   49824534  51243298    2789    50   6.7939e-05    3.8538e-09   6.2079e-05   1.0944       0.27378
+</pre></div>
+
+
+<ul>
+<li><strong>step3.log</strong> - contains estimates of genome-wide genetic covariance and
+correlation and information useful for debugging</li>
+</ul>
+<div class="codehilite"><pre>[INFO] Command started at: Wed, 04 Oct 2017 00:29:13
+[INFO] Command issued:
+[INFO] Total SNP-heritability of trait 1: ...
+[INFO] Total SNP-heritability of trait 2: ...
+                    ...
+[INFO] Genome-wide genetic covariance estimate: ...
+[INFO] Genome-wide genetic correlation estimate: ...
+[INFO] Command finished at: ...
+</pre></div>
+
+
+<div style="background-color:rgba(230, 230, 250, 1.0);">
+( <b>Note</b>: We estimate the standard error of genome-wide genetic correlation
+through jackknife.)
+</div></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright &copy; 2017 - 2022 Huwenbo Shi</p>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+        <script src="../assets/mathjaxhelper.js"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
