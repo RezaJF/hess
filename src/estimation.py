@@ -441,7 +441,7 @@ def local_rhog_step1_helper(eig, prjprod, ld, sumstats1, sumstats2):
     # perform eigenvalue decomposition
     nsnp = ld.shape[0]
     if(nsnp == 0):
-        eig.write('\n'); prjsq.write('\n')
+        eig.write('\n'); prjprod.write('\n')
         return
     
     rank = np.linalg.matrix_rank(ld)
