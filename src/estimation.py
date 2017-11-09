@@ -78,7 +78,7 @@ def local_hsqg_step1_helper(info, eig, prjsq, start, stop, ld, sumstats):
     # perform eigenvalue decomposition
     nsnp = ld.shape[0]
     if(nsnp == 0):
-        info.write('%d\t%d\t%d\t%d\t%.1f\n'.format(start, stop, 0, 0, 0.0))
+        info.write('{}\t{}\t{}\t{}\t{:.1f}\n'.format(start, stop, 0, 0, 0.0))
         eig.write('\n'); prjsq.write('\n')
         return
 
