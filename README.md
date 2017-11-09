@@ -18,4 +18,5 @@ for details.
 ### Updates
 
 November 9, 2017: Updated script to allow for columns of arbitrary order
+
 October 30, 2017: Fixed minor bug in handling loci with no SNP
