@@ -100,7 +100,9 @@ class SumStats(object):
             if req not in cols:
                 logging.error('Missing column {}'.format(req))
                 sys.exit(1)
-        idx_map = dict(zip(cols, [required.index(name) for name in required])) 
+        idx_map = dict()
+        for name in required:
+            idx_map[name] = cols.index(name)
 
         # parse the summary stats file
         sumstats = dict(zip(required, [[] for name in required]))
