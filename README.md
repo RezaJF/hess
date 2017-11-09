@@ -10,10 +10,12 @@ for details.
 
 ### Releases
 
+* [version 0.5.2-beta](https://github.com/huwenboshi/hess/archive/v0.5.2-beta.zip)
 * [version 0.5.1-beta](https://github.com/huwenboshi/hess/archive/v0.5.1-beta.zip)
 * [version 0.5-beta](https://github.com/huwenboshi/hess/releases/tag/v0.5-beta)
 * [version 0.3-beta](https://github.com/huwenboshi/hess/releases/tag/v0.3-beta)
 
 ### Updates
 
+November 9, 2017: Updated script to allow for columns of arbitrary order
 October 30, 2017: Fixed minor bug in handling loci with no SNP
