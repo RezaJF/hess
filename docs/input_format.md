@@ -63,7 +63,7 @@ The following is a list of popular publicly available reference panels.
 * [1000 Genomes Project](http://www.internationalgenome.org/data/)
 * [UK10K](https://www.uk10k.org/data_access.html)
 
-We provide 1000 Genomes reference panel for Europeans [here](https://ucla.box.com/s/4ya4lxvwjsujt6rrotn3keaiw9dkolld).
+We provide 1000 Genomes reference panel for Europeans [here](https://ucla.box.com/shared/static/l8cjbl5jsnghhicn0gdej026x017aj9u.gz).
 All SNPs in this reference panel have minor allele frequency greater than 1%.
 
 <div style="background-color:rgba(230, 230, 250, 1.0);">
