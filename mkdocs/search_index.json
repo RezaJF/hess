@@ -252,7 +252,7 @@
         }, 
         {
             "location": "/faq/", 
-            "text": "Frequently Asked Questions\n\n\nThis page addresses some frequently asked questions from users.\n\n\nWhat is the sample size requirement for HESS and \\(\\rho\\)-HESS?\n\n\nWe recommend to apply HESS and \\(\\rho-HESS\\) on GWAS with sample size greater\nthan 50,000.", 
+            "text": "Frequently Asked Questions\n\n\nThis page addresses some frequently asked questions from users.\n\n\nWhat is the sample size requirement for HESS and \\(\\rho\\)-HESS?\n\n\nWe recommend to apply HESS and \\(\\rho\\)-HESS on GWAS with sample size greater\nthan 50,000. HESS and \\(\\rho\\)-HESS tend to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.\n\n\nOn the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates ( see \nhere\n).", 
             "title": "FAQ"
         }, 
         {
@@ -262,7 +262,7 @@
         }, 
         {
             "location": "/faq/#what-is-the-sample-size-requirement-for-hess-and-92rho92-hess", 
-            "text": "We recommend to apply HESS and \\(\\rho-HESS\\) on GWAS with sample size greater\nthan 50,000.", 
+            "text": "We recommend to apply HESS and \\(\\rho\\)-HESS on GWAS with sample size greater\nthan 50,000. HESS and \\(\\rho\\)-HESS tend to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.  On the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates ( see  here ).", 
             "title": "What is the sample size requirement for HESS and \\(\\rho\\)-HESS?"
         }
     ]
