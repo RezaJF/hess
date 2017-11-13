@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "HESS\n\n\nHESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data.\n\n\nSoftware requirement\n\n\nFor running HESS\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nPySnpTools 0.3+\n\n\nSciPy 0.16+\n\n\n\n\nFor running analysis and visualization tools\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nMatplotlib 1.4+\n\n\nSciPy 0.16+\n\n\n\n\n\n( \nNote\n: It is important to use the latest version of NumPy, which is\nmore numerically stable when performing eigendecomposition of the LD\nmatrix. Python 3.0+ may not work well ith HESS, which is written and tested\nin Python 2.7.3. )\n\n\n\n\nReferences\n\n\n\n\nLocal SNP-heritability\n: \nShi, Huwenbo, Gleb Kichaev, and Bogdan Pasaniuc. \"Contrasting the genetic architecture of 30 complex traits from summary association data.\" The American Journal of Human Genetics 99, no. 1 (2016): 139-153.\n\n\nLocal genetic covariance (correlation)\n: \nShi, Huwenbo, Nicholas Mancuso, Sarah Spendlove, and Bogdan Pasaniuc. \"Local genetic correlation gives insights into the shared genetic architecture of complex traits.\" The American Journal of Human Genetics 101, no. 5 (2017): 737-751.\n\n\n\n\nContact\n\n\n\n\nHuwenbo Shi\n: shihuwenbo_AT_ucla.edu\n\n\nBogdan Pasaniuc\n: bpasaniuc_AT_mednet.ucla.edu", 
+            "text": "HESS\n\n\nHESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data. The latest version is\n\nversion 0.5.3-beta\n.\nReference panel can be downloaded \nhere\n.\n\n\nSoftware requirement\n\n\nFor running HESS\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nPySnpTools 0.3+\n\n\nSciPy 0.16+\n\n\n\n\nFor running analysis and visualization tools\n\n\n\n\nPython 2.7\n\n\nNumPy 1.9+\n\n\nPandas 0.18+\n\n\nMatplotlib 1.4+\n\n\nSciPy 0.16+\n\n\n\n\n\n( \nNote\n: It is important to use the latest version of NumPy, which is\nmore numerically stable when performing eigendecomposition of the LD\nmatrix. Python 3.0+ may not work well ith HESS, which is written and tested\nin Python 2.7.3. )\n\n\n\n\nReferences\n\n\n\n\nLocal SNP-heritability\n: \nShi, Huwenbo, Gleb Kichaev, and Bogdan Pasaniuc. \"Contrasting the genetic architecture of 30 complex traits from summary association data.\" The American Journal of Human Genetics 99, no. 1 (2016): 139-153.\n\n\nLocal genetic covariance (correlation)\n: \nShi, Huwenbo, Nicholas Mancuso, Sarah Spendlove, and Bogdan Pasaniuc. \"Local genetic correlation gives insights into the shared genetic architecture of complex traits.\" The American Journal of Human Genetics 101, no. 5 (2017): 737-751.\n\n\n\n\nContact\n\n\n\n\nHuwenbo Shi\n: shihuwenbo_AT_ucla.edu\n\n\nBogdan Pasaniuc\n: bpasaniuc_AT_mednet.ucla.edu", 
             "title": "Home"
         }, 
         {
             "location": "/#hess", 
-            "text": "HESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data.", 
+            "text": "HESS (Heritability Estimation from Summary Statistics) is a software package\nfor estimating and visualizing local SNP-heritability and genetic covariance\n(correlation) from GWAS summary association data. The latest version is version 0.5.3-beta .\nReference panel can be downloaded  here .", 
             "title": "HESS"
         }, 
         {
@@ -249,6 +249,21 @@
             "location": "/infer_causality/#example", 
             "text": "The following script computes local genetic correlation at loci ascertained\nfor GWAS hits specific to trait 1 and trait 2.  python $src/infer_putative_causality.py \\\n    --local-rhog-est  local genetic covariance output  \\\n    --local-hsqg-est  local SNP-heritability output trait 1   local SNP-heritability output trait 2  \\\n    --trait-names TRAIT1 TRAIT2 \\\n    --gwas-loci  trait 1 GWAS hits   trait 2 GWAS hits  \\\n    --out  output file name e.g. trait1_trait2_causality.pdf    The following is an example output. In addition, a log file containing local\ngenetic correlation estimates will be created.  trait1  local_gcor1  local_gcor1_se  trait2  local_gcor2  local_gcor2_se\nTRAIT1  0.006        0.021           TRAIT2  0.07         0.02", 
             "title": "Example"
+        }, 
+        {
+            "location": "/faq/", 
+            "text": "Frequently Asked Questions\n\n\nThis page addresses some frequently asked questions from users.\n\n\nWhat is the sample size requirement for HESS and \\(\\rho\\)-HESS?\n\n\nWe recommend to apply HESS and \\(\\rho-HESS\\) on GWAS with sample size greater\nthan 50,000.", 
+            "title": "FAQ"
+        }, 
+        {
+            "location": "/faq/#frequently-asked-questions", 
+            "text": "This page addresses some frequently asked questions from users.", 
+            "title": "Frequently Asked Questions"
+        }, 
+        {
+            "location": "/faq/#what-is-the-sample-size-requirement-for-hess-and-92rho92-hess", 
+            "text": "We recommend to apply HESS and \\(\\rho-HESS\\) on GWAS with sample size greater\nthan 50,000.", 
+            "title": "What is the sample size requirement for HESS and \\(\\rho\\)-HESS?"
         }
     ]
 }
