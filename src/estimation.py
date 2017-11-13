@@ -158,10 +158,11 @@ def local_hsqg_step2(prefix, max_num_eig, min_eigval, reinflate,
     """
 
     # make sure reinflate is not a list
-    if reinflate == None: reinflate = 1.0
-    if type(reinflate) == list:
+    if reinflate == None: reinflate = [1.0]
+    if len(reinflate) > 1:
         logging.error('Specified lambda gc should be a single value')
         sys.exit(1)
+    reinflate = reinflate[0]
 
     # load results from step 1
     info, eig, prjsq = load_local_hsqg_step1(prefix)
@@ -188,7 +189,7 @@ def local_quad_form(eig, prjsq, max_k, min_eigval, reinflate):
     
     # log the lambda gc to reinflate
     logging.info('Re-inflate the summary statistics with '\
-        'lambda_gc: {:.2g}'.format(reinflate))
+        'lambda_gc: {:.4g}'.format(reinflate))
 
     all_sum = []; all_k = []
     nloci = len(eig)
@@ -302,10 +303,11 @@ def local_hsqg_step2_helper_tot_hsq(info, eig, prjsq, max_num_eig, min_eigval,
     """
     
     # make sure reinflate is not a list
-    if reinflate == None: reinflate = 1.0
-    if type(reinflate) == list:
+    if reinflate == None: reinflate = [1.0]
+    if len(reinflate) > 1:
         logging.error('Specified lambda gc should be a single value')
         sys.exit(1)
+    reinflate = reinflate[0]
 
     # find the max number of eigenvectors to use based on the sample size
     if gwse_thres == None: gwse_thres = 0.5
@@ -664,7 +666,7 @@ def local_bilin_form(eig, prjprod, max_k, min_eigval, reinflate):
     
     # log the lambda gc to reinflate
     logging.info('Re-inflate the summary statistics with '\
-        'lambda_gc: {:.2g} and {:.2g}'.format(reinflate[0], reinflate[1]))
+        'lambda_gc: {:.4g} and {:.4g}'.format(reinflate[0], reinflate[1]))
 
     all_sum = []; all_k = []
     nloci = len(eig)
