@@ -2,7 +2,9 @@
 
 HESS (Heritability Estimation from Summary Statistics) is a software package
 for estimating and visualizing local SNP-heritability and genetic covariance
-(correlation) from GWAS summary association data.
+(correlation) from GWAS summary association data. The latest version is
+[version 0.5.3-beta](https://github.com/huwenboshi/hess/archive/v0.5.3-beta.zip).
+Reference panel can be downloaded [here](https://ucla.box.com/shared/static/l8cjbl5jsnghhicn0gdej026x017aj9u.gz).
 
 ## Software requirement
 

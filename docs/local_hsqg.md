@@ -129,7 +129,8 @@ SNP-heritability. If the GWAS summary stats has been corrected for
 step 2.
 
 ```
-python hess.py --prefix step1 --reinflate-lambda-gc <lambda gc to reinflate> --out step2
+python hess.py --prefix step1 --reinflate-lambda-gc <lambda gc to reinflate> \
+               --out step2
 ```
 
 ### Running the tool (using total SNP-heritability)
@@ -143,6 +144,15 @@ decompose the total SNP-heritability into each locus.
 ```
 python hess.py --prefix step1 --tot-hsqg <total SNP-heritability> <SE> --out step2
 ```
+
+It is recommended to use the following code if the GWAS summary stats are
+corrected for \\(\lambda_{GC}\\).
+
+```
+python hess.py --prefix step1 --reinflate-lambda-gc <lambda gc to reinflate> \
+               --tot-hsqg <total SNP-heritability> <SE> --out step2
+```
+
 
 #### Other available flags
 

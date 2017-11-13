@@ -94,6 +94,24 @@ python hess.py --prefix step1_trait1 --out step2_trait1
 python hess.py --prefix step1_trait2 --out step2_trait2
 ```
 
+### Note on re-inflating \\(\lambda_{GC}\\)
+
+Most GWAS summary stats are corrected for genomic control factor
+\\(\lambda_{GC}\\). This could result in a downward bias in the estimated
+SNP-heritability. If the GWAS summary stats has been corrected for
+\\(\lambda_{GC}\\), it is recommended to use the following code to perform
+step 2.
+
+```
+# estimate local SNP-heritability for trait 1
+python hess.py --prefix step1_trait1 --reinflate-lambda-gc <lambda gc to reinflate for trait 1> \
+               --out step2_trait1
+
+# estimate local SNP-heritability for trait 2
+python hess.py --prefix step1_trait2 --reinflate-lambda-gc <lambda gc to reinflate for trait 2> \
+               --out step2_trait2
+```
+
 ### Interpreting the output
 
 The above command will result in 4 files, 2 for each trait, containing local
@@ -176,6 +194,24 @@ set to any value (e.g. 0.0) and the result will not be affected. Also, note
 that no for loop is required here. &rho;-HESS will automatically look
 for output from all chromosomes.)
 </div>
+
+### Note on re-inflating \\(\lambda_{GC}\\)
+
+Most GWAS summary stats are corrected for genomic control factor
+\\(\lambda_{GC}\\). This could result in a downward bias in the estimated
+SNP-heritability. If the GWAS summary stats has been corrected for
+\\(\lambda_{GC}\\), it is recommended to use the following code to perform
+step 2.
+
+```
+python hess.py \
+    --prefix step1 \
+    --local-hsqg-est step2_trait1.txt step2_trait2.txt \
+    --reinflate-lambda-gc <lambda gc to reinflate for trait 1> <lambda gc to reinflate for trait 2> \
+    --num-shared <number of overlapping samples in the two GWASs> \
+    --pheno-cor <phenotypic correlation between the two traits> \
+    --out step3
+```
 
 #### Other available flags
 

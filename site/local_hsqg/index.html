@@ -90,6 +90,9 @@
 </li>
                         </ul>
                     </li>
+                    <li >
+                        <a href="../faq/">FAQ</a>
+                    </li>
                 </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -249,7 +252,8 @@ for loop is needed here. )
 SNP-heritability. If the GWAS summary stats has been corrected for
 \(\lambda_{GC}\), it is recommended to use the following code to perform
 step 2.</p>
-<div class="codehilite"><pre>python hess.py --prefix step1 --reinflate-lambda-gc &lt;lambda gc to reinflate&gt; --out step2
+<div class="codehilite"><pre>python hess.py --prefix step1 --reinflate-lambda-gc &lt;lambda gc to reinflate&gt; \
+               --out step2
 </pre></div>
 
 
@@ -260,6 +264,13 @@ large standard error in the local estimates. However, if an estimate of total
 SNP-heritability is available, then one may use the following script to
 decompose the total SNP-heritability into each locus.</p>
 <div class="codehilite"><pre>python hess.py --prefix step1 --tot-hsqg &lt;total SNP-heritability&gt; &lt;SE&gt; --out step2
+</pre></div>
+
+
+<p>It is recommended to use the following code if the GWAS summary stats are
+corrected for \(\lambda_{GC}\).</p>
+<div class="codehilite"><pre>python hess.py --prefix step1 --reinflate-lambda-gc &lt;lambda gc to reinflate&gt; \
+               --tot-hsqg &lt;total SNP-heritability&gt; &lt;SE&gt; --out step2
 </pre></div>
 
 
