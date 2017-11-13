@@ -263,6 +263,12 @@ decompose the total SNP-heritability into each locus.</p>
 </pre></div>
 
 
+<p>It is recommended to use the following code if the GWAS summary stats are
+corrected for \(\lambda_{GC}\).</p>
+<div class="codehilite"><pre>python hess.py --prefix step1 --reinflate-lambda-gc &lt;lambda gc to reinflate&gt; --tot-hsqg &lt;total SNP-heritability&gt; &lt;SE&gt; --out step2
+</pre></div>
+
+
 <h4 id="other-available-flags">Other available flags<a class="headerlink" href="#other-available-flags" title="Permanent link">&para;</a></h4>
 <ul>
 <li><code>--max-num-eig</code>: Specifies the number of eigenvectors to use in the
