@@ -292,7 +292,6 @@ genetic covariance estimates.</p>
 <div class="codehilite"><pre>python hess.py \
     --prefix step1 \
     --local-hsqg-est step2_trait1.txt step2_trait2.txt \
-    --reinflate-lambda-gc &lt;lambda gc to reinflate for trait 1&gt; &lt;lambda gc to reinflate for trait 2&gt; \
     --num-shared &lt;number of overlapping samples in the two GWASs&gt; \
     --pheno-cor &lt;phenotypic correlation between the two traits&gt; \
     --out step3
@@ -315,6 +314,7 @@ step 2.</p>
 <div class="codehilite"><pre>python hess.py \
     --prefix step1 \
     --local-hsqg-est step2_trait1.txt step2_trait2.txt \
+    --reinflate-lambda-gc &lt;lambda gc to reinflate for trait 1&gt; &lt;lambda gc to reinflate for trait 2&gt; \
     --num-shared &lt;number of overlapping samples in the two GWASs&gt; \
     --pheno-cor &lt;phenotypic correlation between the two traits&gt; \
     --out step3
