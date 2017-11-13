@@ -243,6 +243,16 @@ next section to obtain local SNP-heritability estimates. Also note that no
 for loop is needed here. )
 </div>
 
+<h3 id="note-on-re-inflating-92lambda_gc92">Note on re-inflating \(\lambda_{GC}\)<a class="headerlink" href="#note-on-re-inflating-92lambda_gc92" title="Permanent link">&para;</a></h3>
+<p>Most GWAS summary stats are corrected for genomic control factor
+\(\lambda_{GC}\). This could result in a downward bias in the estimated
+SNP-heritability. If the GWAS summary stats has been corrected for
+\(\lambda_{GC}\), it is recommended to use the following code to perform
+step 2.</p>
+<div class="codehilite"><pre>python hess.py --prefix step1 --reinflate-lambda-gc &lt;lambda gc to reinflate&gt; --out step2
+</pre></div>
+
+
 <h3 id="running-the-tool-using-total-snp-heritability">Running the tool (using total SNP-heritability)<a class="headerlink" href="#running-the-tool-using-total-snp-heritability" title="Permanent link">&para;</a></h3>
 <p>If sample size of the GWAS is relatively small, the standard error of total
 SNP-heritability estimates of HESS can be large, which could then lead to
