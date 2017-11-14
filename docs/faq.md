@@ -24,6 +24,11 @@ environmental effect variance (\\(\sigma_e^2\\)) -- with \\(\lambda_{GC}\\)
 corrected GWAS summary stats, HESS tends to overestimate \\(\sigma_e^2\\),
 resulting in downward bias in local SNP-heritability.
 
+See [here](http://huwenboshi.github.io/hess/local_hsqg/#note-on-re-inflating-92lambda_gc92)
+for how to specify \\(\lambda_{GC}\\) in estimating local SNP-heritability,
+and [here](http://huwenboshi.github.io/hess/local_rhog/#note-on-re-inflating-92lambda_gc92_1)
+for genetic covariance.
+
 ## Why do I get negative local SNP-heritability estimates?
 
 Local SNP-heritability are not constrained to be greater than 0, so that if a locus
