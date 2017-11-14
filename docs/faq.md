@@ -32,7 +32,7 @@ truly has zero SNP-heritability, then HESS can give a zero estimation in the exp
 If a locus has negative SNP-heritability estimate, then this is likely because the
 local SNP-heritability of the trait is close to zero.
 
-## Why do I get NaN for genome-wide SNP-heritability estimates?
+## Why do I get NaN for genome-wide SNP-heritability variance estimates?
 
 This is because the estimated variance of the genome-wide SNP-heritability
 is negative, usually caused by relatively small sample size of the GWAS.
