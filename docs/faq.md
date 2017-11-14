@@ -24,7 +24,7 @@ environmental effect variance (\\(\sigma_e^2\\)) -- with \\(\lambda_{GC}\\)
 corrected GWAS summary stats, HESS tends to overestimate \\(\sigma_e^2\\),
 resulting in downward bias in local SNP-heritability.
 
-## Why do I get negative variance estimates for local SNP-heritability?
+## Why do I get negative variance estimates for local SNP-heritability / genetic covariance?
 
 The variance estimates for local SNP-heritbility (genetic covariance) is a
 random variable that is not constrained to be positive. For some loci, the
@@ -34,6 +34,8 @@ Usually, negative variance estimates are caused by relatively small sample
 size of the GWAS.
 
 ## What does the following error message mean?
+
+Some users experience the following error message in step 2 of the analysis.
 
 ```
 [ERROR] Rank of A less than the number of loci. There might be loci with no SNP.
@@ -47,6 +49,19 @@ Usually, this error is caused by empty locus (SNP with no SNP in it).
 
 If there are empty loci in the data, it is recommended to remove these loci
 or combine these loci with nearby loci.
+
+## What does the following error message mean?
+
+Some users experience the following error message in step 2 of the analysis.
+
+```
+IOError: CRC check failed ...
+```
+
+This is usually caused by prematurely finished step 1.
+
+Note that step 1 usually involves inverting large matrices and may take quite
+bit of memory.
 
 ## Why do I get negative SNP-heritability estimates?
 
