@@ -46,6 +46,13 @@ local SNP-heritability variance estimates may be negative.
 Usually, negative variance estimates are caused by relatively small sample
 size of the GWAS.
 
+## Why does HESS give different estimate than LDSC?
+
+Overall, HESS and LDSC should give similar estimates. However, HESS and LDSC
+have different definitions of SNP-heritability and genetic covariance. Also,
+unlike LDSC, HESS does not account for population stratification in the GWAS
+summary stats. This could also cause the difference.
+
 ## What does the following error message mean?
 
 Some users experience the following error message in step 2 of the analysis.
