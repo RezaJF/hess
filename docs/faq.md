@@ -32,3 +32,22 @@ local SNP-heritability variance estimates may be negative.
 
 Usually, negative variance estimates are caused by relatively small sample
 size of the GWAS.
+
+## What does the following error message mean?
+
+```
+[ERROR] Rank of A less than the number of loci. There might be loci with no SNP.
+```
+
+The second step of HESS and \\(\rho\\)-HESS involves inverting a matrix. If
+the matrix is not invertible, HESS and \\(\rho\\)-HESS will not attempt to
+estimate SNP-heritability or genetic covariance.
+
+Usually, this error is caused by empty locus (SNP with no SNP in it).
+
+If there are empty loci in the data, it is recommended to remove these loci
+or combine these loci with nearby loci.
+
+## Why do I get negative SNP-heritability estimates?
+
+This is likely because the SNP-heritability of the trait is close to zero.
