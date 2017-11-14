@@ -130,6 +130,7 @@
             <li><a href="#why-do-i-get-negative-local-snp-heritability-estimates">Why do I get negative local SNP-heritability estimates?</a></li>
             <li><a href="#why-do-i-get-nan-for-genome-wide-snp-heritability-variance-estimates">Why do I get NaN for genome-wide SNP-heritability variance estimates?</a></li>
             <li><a href="#why-do-i-get-negative-variance-estimates-for-local-snp-heritability-genetic-covariance">Why do I get negative variance estimates for local SNP-heritability / genetic covariance?</a></li>
+            <li><a href="#why-does-hess-give-different-estimate-than-ldsc">Why does HESS give different estimate than LDSC?</a></li>
             <li><a href="#what-does-the-following-error-message-mean">What does the following error message mean?</a></li>
             <li><a href="#what-does-the-following-error-message-mean_1">What does the following error message mean?</a></li>
     </ul>
@@ -169,6 +170,11 @@ random variable that is not constrained to be positive. For some loci, the
 local SNP-heritability variance estimates may be negative.</p>
 <p>Usually, negative variance estimates are caused by relatively small sample
 size of the GWAS.</p>
+<h2 id="why-does-hess-give-different-estimate-than-ldsc">Why does HESS give different estimate than LDSC?<a class="headerlink" href="#why-does-hess-give-different-estimate-than-ldsc" title="Permanent link">&para;</a></h2>
+<p>Overall, HESS and LDSC should give similar estimates. However, HESS and LDSC
+have different definitions of SNP-heritability and genetic covariance. Also,
+unlike LDSC, HESS does not account for population stratification in the GWAS
+summary stats. This could also cause the difference.</p>
 <h2 id="what-does-the-following-error-message-mean">What does the following error message mean?<a class="headerlink" href="#what-does-the-following-error-message-mean" title="Permanent link">&para;</a></h2>
 <p>Some users experience the following error message in step 2 of the analysis.</p>
 <div class="codehilite"><pre>[ERROR] Rank of A less than the number of loci. There might be loci with no SNP.
