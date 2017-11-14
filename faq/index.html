@@ -125,17 +125,19 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
-            <li><a href="#what-is-the-sample-size-requirement-for-hess-and-92rho92-hess">What is the sample size requirement for HESS and \(\rho\)-HESS?</a></li>
+            <li><a href="#what-is-the-sample-size-requirement-for-hess">What is the sample size requirement for HESS?</a></li>
             <li><a href="#why-is-it-necessary-to-re-inflate-genomic-control-factor">Why is it necessary to re-inflate genomic control factor?</a></li>
+            <li><a href="#why-do-i-get-negative-variance-estimates-for-local-snp-heritability">Why do I get negative variance estimates for local SNP-heritability?</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
 <h1 id="frequently-asked-questions">Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h1>
-<p>This page addresses some frequently asked questions from users.</p>
-<h2 id="what-is-the-sample-size-requirement-for-hess-and-92rho92-hess">What is the sample size requirement for HESS and \(\rho\)-HESS?<a class="headerlink" href="#what-is-the-sample-size-requirement-for-hess-and-92rho92-hess" title="Permanent link">&para;</a></h2>
-<p>We recommend to apply HESS and \(\rho\)-HESS on GWAS with sample size greater
-than 50,000. HESS and \(\rho\)-HESS tend to be downwardly biased at smaller
+<p>This page addresses some frequently asked questions from users.
+Most of the question that applies to HESS also applies to \(\rho\)-HESS.</p>
+<h2 id="what-is-the-sample-size-requirement-for-hess">What is the sample size requirement for HESS?<a class="headerlink" href="#what-is-the-sample-size-requirement-for-hess" title="Permanent link">&para;</a></h2>
+<p>We recommend to apply HESS on GWAS with sample size greater
+than 50,000. HESS tends to be downwardly biased at smaller
 GWAS since fewer eigenvectors are necessary in the truncated-SVD
 regularization to obtain a stable estimate.</p>
 <p>On the other hand, if genome-wide SNP-heritability is available for the GWAS
@@ -148,7 +150,13 @@ association statistics. This could result in a downward bias in the estimated
 heritability since the second step of HESS involves an estimation of the
 environmental effect variance (\(\sigma_e^2\)) -- with \(\lambda_{GC}\)
 corrected GWAS summary stats, HESS tends to overestimate \(\sigma_e^2\),
-resulting in downward bias in local SNP-heritability.</p></div>
+resulting in downward bias in local SNP-heritability.</p>
+<h2 id="why-do-i-get-negative-variance-estimates-for-local-snp-heritability">Why do I get negative variance estimates for local SNP-heritability?<a class="headerlink" href="#why-do-i-get-negative-variance-estimates-for-local-snp-heritability" title="Permanent link">&para;</a></h2>
+<p>The variance estimates for local SNP-heritbility (genetic covariance) is a
+random variable that is not constrained to be positive. For some loci, the
+local SNP-heritability variance estimates may be negative.</p>
+<p>Usually, negative variance estimates are caused by relatively small sample
+size of the GWAS.</p></div>
         </div>
 
         <footer class="col-md-12">

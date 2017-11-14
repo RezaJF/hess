@@ -252,23 +252,28 @@
         }, 
         {
             "location": "/faq/", 
-            "text": "Frequently Asked Questions\n\n\nThis page addresses some frequently asked questions from users.\n\n\nWhat is the sample size requirement for HESS and \\(\\rho\\)-HESS?\n\n\nWe recommend to apply HESS and \\(\\rho\\)-HESS on GWAS with sample size greater\nthan 50,000. HESS and \\(\\rho\\)-HESS tend to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.\n\n\nOn the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates\n(see \nhere\n).\n\n\nWhy is it necessary to re-inflate genomic control factor?\n\n\nMost GWAS studies apply genomic control factor (\\(\\lambda_{GC}\\)) on the\nassociation statistics. This could result in a downward bias in the estimated\nheritability since the second step of HESS involves an estimation of the\nenvironmental effect variance (\\(\\sigma_e^2\\)) -- with \\(\\lambda_{GC}\\)\ncorrected GWAS summary stats, HESS tends to overestimate \\(\\sigma_e^2\\),\nresulting in downward bias in local SNP-heritability.", 
+            "text": "Frequently Asked Questions\n\n\nThis page addresses some frequently asked questions from users.\nMost of the question that applies to HESS also applies to \\(\\rho\\)-HESS.\n\n\nWhat is the sample size requirement for HESS?\n\n\nWe recommend to apply HESS on GWAS with sample size greater\nthan 50,000. HESS tends to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.\n\n\nOn the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates\n(see \nhere\n).\n\n\nWhy is it necessary to re-inflate genomic control factor?\n\n\nMost GWAS studies apply genomic control factor (\\(\\lambda_{GC}\\)) on the\nassociation statistics. This could result in a downward bias in the estimated\nheritability since the second step of HESS involves an estimation of the\nenvironmental effect variance (\\(\\sigma_e^2\\)) -- with \\(\\lambda_{GC}\\)\ncorrected GWAS summary stats, HESS tends to overestimate \\(\\sigma_e^2\\),\nresulting in downward bias in local SNP-heritability.\n\n\nWhy do I get negative variance estimates for local SNP-heritability?\n\n\nThe variance estimates for local SNP-heritbility (genetic covariance) is a\nrandom variable that is not constrained to be positive. For some loci, the\nlocal SNP-heritability variance estimates may be negative.\n\n\nUsually, negative variance estimates are caused by relatively small sample\nsize of the GWAS.", 
             "title": "FAQ"
         }, 
         {
             "location": "/faq/#frequently-asked-questions", 
-            "text": "This page addresses some frequently asked questions from users.", 
+            "text": "This page addresses some frequently asked questions from users.\nMost of the question that applies to HESS also applies to \\(\\rho\\)-HESS.", 
             "title": "Frequently Asked Questions"
         }, 
         {
-            "location": "/faq/#what-is-the-sample-size-requirement-for-hess-and-92rho92-hess", 
-            "text": "We recommend to apply HESS and \\(\\rho\\)-HESS on GWAS with sample size greater\nthan 50,000. HESS and \\(\\rho\\)-HESS tend to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.  On the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates\n(see  here ).", 
-            "title": "What is the sample size requirement for HESS and \\(\\rho\\)-HESS?"
+            "location": "/faq/#what-is-the-sample-size-requirement-for-hess", 
+            "text": "We recommend to apply HESS on GWAS with sample size greater\nthan 50,000. HESS tends to be downwardly biased at smaller\nGWAS since fewer eigenvectors are necessary in the truncated-SVD\nregularization to obtain a stable estimate.  On the other hand, if genome-wide SNP-heritability is available for the GWAS\n(e.g. estimated from individual-level data), then it may still be possible to\nobtain the local estimates\n(see  here ).", 
+            "title": "What is the sample size requirement for HESS?"
         }, 
         {
             "location": "/faq/#why-is-it-necessary-to-re-inflate-genomic-control-factor", 
             "text": "Most GWAS studies apply genomic control factor (\\(\\lambda_{GC}\\)) on the\nassociation statistics. This could result in a downward bias in the estimated\nheritability since the second step of HESS involves an estimation of the\nenvironmental effect variance (\\(\\sigma_e^2\\)) -- with \\(\\lambda_{GC}\\)\ncorrected GWAS summary stats, HESS tends to overestimate \\(\\sigma_e^2\\),\nresulting in downward bias in local SNP-heritability.", 
             "title": "Why is it necessary to re-inflate genomic control factor?"
+        }, 
+        {
+            "location": "/faq/#why-do-i-get-negative-variance-estimates-for-local-snp-heritability", 
+            "text": "The variance estimates for local SNP-heritbility (genetic covariance) is a\nrandom variable that is not constrained to be positive. For some loci, the\nlocal SNP-heritability variance estimates may be negative.  Usually, negative variance estimates are caused by relatively small sample\nsize of the GWAS.", 
+            "title": "Why do I get negative variance estimates for local SNP-heritability?"
         }
     ]
 }
