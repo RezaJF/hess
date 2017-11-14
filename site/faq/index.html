@@ -127,10 +127,11 @@
         <li class="main active"><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
             <li><a href="#what-is-the-sample-size-requirement-for-hess">What is the sample size requirement for HESS?</a></li>
             <li><a href="#why-is-it-necessary-to-re-inflate-genomic-control-factor">Why is it necessary to re-inflate genomic control factor?</a></li>
+            <li><a href="#why-do-i-get-negative-local-snp-heritability-estimates">Why do I get negative local SNP-heritability estimates?</a></li>
+            <li><a href="#why-do-i-get-nan-for-genome-wide-snp-heritability-estimates">Why do I get NaN for genome-wide SNP-heritability estimates?</a></li>
             <li><a href="#why-do-i-get-negative-variance-estimates-for-local-snp-heritability-genetic-covariance">Why do I get negative variance estimates for local SNP-heritability / genetic covariance?</a></li>
             <li><a href="#what-does-the-following-error-message-mean">What does the following error message mean?</a></li>
             <li><a href="#what-does-the-following-error-message-mean_1">What does the following error message mean?</a></li>
-            <li><a href="#why-do-i-get-negative-snp-heritability-estimates">Why do I get negative SNP-heritability estimates?</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
@@ -154,6 +155,14 @@ heritability since the second step of HESS involves an estimation of the
 environmental effect variance (\(\sigma_e^2\)) -- with \(\lambda_{GC}\)
 corrected GWAS summary stats, HESS tends to overestimate \(\sigma_e^2\),
 resulting in downward bias in local SNP-heritability.</p>
+<h2 id="why-do-i-get-negative-local-snp-heritability-estimates">Why do I get negative local SNP-heritability estimates?<a class="headerlink" href="#why-do-i-get-negative-local-snp-heritability-estimates" title="Permanent link">&para;</a></h2>
+<p>Local SNP-heritability are not constrained to be greater than 0, so that if a locus
+truly has zero SNP-heritability, then HESS can give a zero estimation in the expectation.</p>
+<p>If a locus has negative SNP-heritability estimate, then this is likely because the
+local SNP-heritability of the trait is close to zero.</p>
+<h2 id="why-do-i-get-nan-for-genome-wide-snp-heritability-estimates">Why do I get NaN for genome-wide SNP-heritability estimates?<a class="headerlink" href="#why-do-i-get-nan-for-genome-wide-snp-heritability-estimates" title="Permanent link">&para;</a></h2>
+<p>This is because the estimated variance of the genome-wide SNP-heritability
+is negative, usually caused by relatively small sample size of the GWAS.</p>
 <h2 id="why-do-i-get-negative-variance-estimates-for-local-snp-heritability-genetic-covariance">Why do I get negative variance estimates for local SNP-heritability / genetic covariance?<a class="headerlink" href="#why-do-i-get-negative-variance-estimates-for-local-snp-heritability-genetic-covariance" title="Permanent link">&para;</a></h2>
 <p>The variance estimates for local SNP-heritbility (genetic covariance) is a
 random variable that is not constrained to be positive. For some loci, the
@@ -180,9 +189,7 @@ or combine these loci with nearby loci.</p>
 
 <p>This is usually caused by prematurely finished step 1.</p>
 <p>Note that step 1 usually involves inverting large matrices and may take quite
-bit of memory.</p>
-<h2 id="why-do-i-get-negative-snp-heritability-estimates">Why do I get negative SNP-heritability estimates?<a class="headerlink" href="#why-do-i-get-negative-snp-heritability-estimates" title="Permanent link">&para;</a></h2>
-<p>This is likely because the SNP-heritability of the trait is close to zero.</p></div>
+bit of memory.</p></div>
         </div>
 
         <footer class="col-md-12">

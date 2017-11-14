@@ -24,6 +24,19 @@ environmental effect variance (\\(\sigma_e^2\\)) -- with \\(\lambda_{GC}\\)
 corrected GWAS summary stats, HESS tends to overestimate \\(\sigma_e^2\\),
 resulting in downward bias in local SNP-heritability.
 
+## Why do I get negative local SNP-heritability estimates?
+
+Local SNP-heritability are not constrained to be greater than 0, so that if a locus
+truly has zero SNP-heritability, then HESS can give a zero estimation in the expectation.
+
+If a locus has negative SNP-heritability estimate, then this is likely because the
+local SNP-heritability of the trait is close to zero.
+
+## Why do I get NaN for genome-wide SNP-heritability estimates?
+
+This is because the estimated variance of the genome-wide SNP-heritability
+is negative, usually caused by relatively small sample size of the GWAS.
+
 ## Why do I get negative variance estimates for local SNP-heritability / genetic covariance?
 
 The variance estimates for local SNP-heritbility (genetic covariance) is a
@@ -62,7 +75,3 @@ This is usually caused by prematurely finished step 1.
 
 Note that step 1 usually involves inverting large matrices and may take quite
 bit of memory.
-
-## Why do I get negative SNP-heritability estimates?
-
-This is likely because the SNP-heritability of the trait is close to zero.
