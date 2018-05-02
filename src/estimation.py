@@ -302,13 +302,6 @@ def local_hsqg_step2_helper_tot_hsq(info, eig, prjsq, max_num_eig, min_eigval,
     standard eror are provided
     """
     
-    # make sure reinflate is not a list
-    if reinflate == None: reinflate = [1.0]
-    if len(reinflate) > 1:
-        logging.error('Specified lambda gc should be a single value')
-        sys.exit(1)
-    reinflate = reinflate[0]
-
     # find the max number of eigenvectors to use based on the sample size
     if gwse_thres == None: gwse_thres = 0.5
     nloci = info.shape[0]; nsnp = np.sum(info['nsnp'])
