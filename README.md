@@ -10,6 +10,7 @@ for details.
 
 ### Releases
 
+* [version 0.5.4-beta](https://github.com/huwenboshi/hess/archive/v0.5.4-beta.zip)
 * [version 0.5.3-beta](https://github.com/huwenboshi/hess/archive/v0.5.3-beta.zip)
 * [version 0.5.1-beta](https://github.com/huwenboshi/hess/archive/v0.5.1-beta.zip)
 * [version 0.5-beta](https://github.com/huwenboshi/hess/releases/tag/v0.5-beta)
