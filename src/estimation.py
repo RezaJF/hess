@@ -557,7 +557,7 @@ def local_rhog_step2(prefix, local_hsqg_est_fnm, max_num_eig, min_eigval,
         .format(tot_rhog, tot_rhog_se))
 
     # obtain test statistics
-    se = np.sqrt(local_rhog_est_var.astype(float32))
+    se = np.sqrt(local_rhog_est_var.astype(np.float32))
     zsc = local_rhog_est / se
     zsc[zsc.isnull()] = 0.0
     pval = scipy.stats.norm.sf(np.fabs(zsc))*2.0
