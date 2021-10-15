@@ -282,7 +282,7 @@ def local_hsqg_step2_helper(info, eig, prjsq, max_num_eig, min_eigval,
     local_hsqg_est_var = local_hsqg_var(info, local_hsqg_est)
     
     # obtain test statistics
-    se = np.sqrt(local_hsqg_est_var)
+    se = np.sqrt(local_hsqg_est_var.astype(np.float32))
     zsc = local_hsqg_est / se
     zsc[(zsc < 0) | zsc.isnull()] = 0.0
     pval = scipy.stats.norm.sf(np.fabs(zsc))
